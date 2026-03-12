@@ -1,5 +1,28 @@
 import { Trash2, Plus } from 'lucide-react';
 
+// ================= Helper Component =================
+const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }: any) => (
+  <div className="mb-4 w-full">
+    <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{label}</label>
+    {isTextarea ? (
+      <textarea
+        value={value || ''}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 resize-y min-h-[100px] transition-colors"
+      />
+    ) : (
+      <input
+        type="text"
+        value={value || ''}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
+      />
+    )}
+  </div>
+);
+
 export default function DynamicForm({ activeTab, data, setData }: { activeTab: string, data: any, setData: any }) {
   if (!data || !data[activeTab]) return null;
 
@@ -46,28 +69,6 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
     });
   };
 
-  // Helper Input Component
-  const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }: any) => (
-    <div className="mb-4 w-full">
-      <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{label}</label>
-      {isTextarea ? (
-        <textarea
-          value={value || ''}
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 resize-y min-h-[100px] transition-colors"
-        />
-      ) : (
-        <input
-          type="text"
-          value={value || ''}
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
-        />
-      )}
-    </div>
-  );
 
   // ================= Forms =================
 
