@@ -1,0 +1,91 @@
+{
+  "hero": {
+    "name": "Your Name",
+    "title": "Creative Developer",
+    "subtitle": "I craft digital experiences that inspire and engage.",
+    "tagline": "Design. Build. Inspire.",
+    "avatar": ""
+  },
+  "about": {
+    "description": "I'm a passionate developer and designer who believes in the power of clean code and beautiful design. With years of experience building digital products, I bring ideas to life through thoughtful interfaces and seamless user experiences.",
+    "highlights": [
+      "Full-Stack Development",
+      "UI/UX Design",
+      "Mobile-First Approach",
+      "Performance Optimization"
+    ]
+  },
+  "projects": [
+    {
+      "id": "1",
+      "title": "Project Alpha",
+      "description": "A revolutionary mobile application that transforms how people interact with their daily routines.",
+      "category": "Mobile App",
+      "image": "",
+      "link": "",
+      "technologies": ["React Native", "Node.js", "MongoDB"]
+    },
+    {
+      "id": "2",
+      "title": "Project Beta",
+      "description": "An elegant web platform for creative professionals to showcase their work with stunning visual presentations.",
+      "category": "Web Platform",
+      "image": "",
+      "link": "",
+      "technologies": ["Next.js", "TypeScript", "PostgreSQL"]
+    },
+    {
+      "id": "3",
+      "title": "Project Gamma",
+      "description": "A cutting-edge design system built for scalability, consistency, and beautiful user interfaces.",
+      "category": "Design System",
+      "image": "",
+      "link": "",
+      "technologies": ["Figma", "React", "Storybook"]
+    }
+  ],
+  "skills": [
+    { "name": "React / Next.js", "level": 95, "category": "Frontend", "description": "Building modern, reactive, and server-side rendered web applications using the React ecosystem.", "image": "" },
+    { "name": "TypeScript", "level": 90, "category": "Language", "description": "Writing type-safe, scalable, and maintainable JavaScript code for both frontend and backend.", "image": "" },
+    { "name": "Node.js", "level": 85, "category": "Backend", "description": "Developing asynchronous, event-driven, and scalable backend services and APIs.", "image": "" },
+    { "name": "UI/UX Design", "level": 88, "category": "Design", "description": "Designing intuitive interfaces, wireframes, and prototypes with a strong focus on user experience.", "image": "" },
+    { "name": "Python", "level": 80, "category": "Language", "description": "Creating automation scripts, data analysis pipelines, and backend logic efficiently.", "image": "" },
+    { "name": "Database Design", "level": 82, "category": "Backend", "description": "Architecting relational (SQL) and non-relational (NoSQL) database schemas for optimal performance.", "image": "" },
+    { "name": "Mobile Development", "level": 78, "category": "Frontend", "description": "Building cross-platform mobile applications using frameworks like React Native.", "image": "" },
+    { "name": "DevOps / CI/CD", "level": 75, "category": "Infrastructure", "description": "Automating deployment workflows and managing cloud infrastructure for reliable software delivery.", "image": "" }
+  ],
+  "experience": [
+    {
+      "id": "1",
+      "role": "Senior Developer",
+      "company": "Tech Company",
+      "period": "2024 - Present",
+      "description": "Leading development of innovative digital products with a focus on performance and user experience."
+    },
+    {
+      "id": "2",
+      "role": "Full-Stack Developer",
+      "company": "Creative Agency",
+      "period": "2022 - 2024",
+      "description": "Built and maintained multiple client projects from concept to deployment, specializing in modern web technologies."
+    },
+    {
+      "id": "3",
+      "role": "Frontend Developer",
+      "company": "Startup Inc",
+      "period": "2020 - 2022",
+      "description": "Developed responsive web applications and contributed to design systems used across the organization."
+    }
+  ],
+  "contact": {
+    "email": "hello@yourname.com",
+    "phone": "+62 812 3456 7890",
+    "location": "Indonesia",
+    "social": {
+      "github": "https://github.com/yourusername",
+      "linkedin": "https://linkedin.com/in/yourusername",
+      "instagram": "https://instagram.com/yourusername",
+      "twitter": "https://twitter.com/yourusername"
+    }
+  }
+}
