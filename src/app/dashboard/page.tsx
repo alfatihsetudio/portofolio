@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Database, LogOut, CheckCircle2, AlertCircle, Save } from 'lucide-react';
+import DynamicForm from './DynamicForm';
 
 export default function DashboardPage() {
   const [data, setData] = useState<any>(null);
@@ -148,29 +149,18 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold capitalize bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">
               Edit {activeTab}
             </h2>
-            <span className="text-xs text-white/30 uppercase tracking-widest px-3 py-1 rounded-full bg-white/5 border border-white/10">
-              JSON Edit Mode
+            <span className="text-xs text-emerald-400/80 uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Visual Editor Mode
             </span>
           </div>
           
-          <p className="text-sm text-white/40 mb-6 font-light">
-            You can modify the data structure below directly. Make sure the JSON format remains valid before saving.
+          <p className="text-sm text-white/40 mb-8 font-light">
+            Fill in the fields below to update your portfolio section. Changes are saved directly to the database.
           </p>
 
-          <div className="relative group rounded-xl overflow-hidden border border-white/10 focus-within:border-blue-500/50 focus-within:ring-1 focus-within:ring-blue-500/50 transition-all">
-            <textarea
-              className="w-full h-[60vh] bg-black/50 p-6 text-sm font-mono text-white/80 focus:text-white outline-none resize-none leading-relaxed"
-              value={JSON.stringify(data[activeTab], null, 2)}
-              onChange={(e) => {
-                try {
-                  const updatedSection = JSON.parse(e.target.value);
-                  setData((prev: any) => ({ ...prev, [activeTab]: updatedSection }));
-                } catch {
-                  // Ignore invalid JSON while typing
-                }
-              }}
-              spellCheck={false}
-            />
+          <div className="relative">
+            <DynamicForm activeTab={activeTab} data={data} setData={setData} />
           </div>
         </div>
       </main>

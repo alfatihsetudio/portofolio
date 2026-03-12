@@ -1,19 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Redis } from '@upstash/redis';
+import { kv } from '@vercel/kv';
 
 const dataFilePath = path.join(process.cwd(), 'src', 'data', 'portfolio.json');
 
-// Get Redis instance if env vars are present
-const getRedis = () => {
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-    return new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    });
-  }
-  return null;
+// Check if Vercel KV is configured via environment variables that Vercel injects
+const isVercelKVConfigured = () => {
+  return process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
 };
 
 export interface PortfolioData {
@@ -65,14 +59,12 @@ export interface PortfolioData {
 }
 
 export async function getPortfolioData(): Promise<PortfolioData> {
-  const redis = getRedis();
-
-  if (redis) {
+  if (isVercelKVConfigured()) {
     try {
-      const data = await redis.get<PortfolioData>('portfolio_data');
+      const data = await kv.get<PortfolioData>('portfolio_data');
       if (data) return data;
     } catch (e) {
-      console.error("Redis fetch error, falling back to local file", e);
+      console.error("Vercel KV fetch error, falling back to local file", e);
     }
   }
 
@@ -87,14 +79,12 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 }
 
 export async function savePortfolioData(data: PortfolioData): Promise<void> {
-  const redis = getRedis();
-
-  if (redis) {
+  if (isVercelKVConfigured()) {
     try {
-      await redis.set('portfolio_data', JSON.stringify(data));
-      return; // If Redis save succeeds, we don't strictly need to write to fs (which Vercel might block anyway).
+      await kv.set('portfolio_data', data);
+      return; // If KV save succeeds, skip writing to local fs
     } catch (e) {
-      console.error("Redis save error, falling back to local file", e);
+      console.error("Vercel KV save error, falling back to local file", e);
     }
   }
 
