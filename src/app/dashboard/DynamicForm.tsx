@@ -1,4 +1,5 @@
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, Upload, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 // ================= Helper Component =================
 const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }: any) => (
@@ -22,6 +23,80 @@ const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }:
     )}
   </div>
 );
+
+const ImageUploadField = ({ label, value, onChange }: any) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const { url } = await res.json();
+        onChange(url);
+      } else {
+        alert("Upload gagal! Pastikan Database Blob sudah dikaitkan ke Vercel.");
+      }
+    } catch (err) {
+      alert("Error saat mengupload gamber.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="mb-4 w-full">
+      <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{label}</label>
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+        {/* Preview & Text URL Input */}
+        <div className="flex-1 w-full relative">
+          <input
+            type="text"
+            value={value || ''}
+            placeholder="https://..."
+            onChange={(e) => onChange(e.target.value)}
+            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors pr-12"
+          />
+          {value && (
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg overflow-hidden border border-white/10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={value} alt="Preview" className="w-full h-full object-cover" />
+            </div>
+          )}
+        </div>
+        
+        {/* Upload Button */}
+        <div className="relative shrink-0">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUpload}
+            disabled={isUploading}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+          />
+          <button
+            type="button"
+            disabled={isUploading}
+            className="flex items-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-medium transition-all disabled:opacity-50"
+          >
+            {isUploading ? <Loader2 size={16} className="animate-spin text-blue-400" /> : <Upload size={16} className="text-blue-400" />}
+            {isUploading ? 'Uploading...' : 'Upload File'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function DynamicForm({ activeTab, data, setData }: { activeTab: string, data: any, setData: any }) {
   if (!data || !data[activeTab]) return null;
@@ -79,7 +154,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
         <Input label="Title (e.g., Creative Developer)" value={sectionData.title} onChange={(v: string) => updateField('title', v)} />
         <Input label="Subtitle" isTextarea value={sectionData.subtitle} onChange={(v: string) => updateField('subtitle', v)} />
         <Input label="Tagline (e.g., Design. Build. Inspire.)" value={sectionData.tagline} onChange={(v: string) => updateField('tagline', v)} />
-        <Input label="Avatar Image URL" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} placeholder={"https://..."} />
+        <ImageUploadField label="Avatar Image" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} />
       </div>
     );
   }
@@ -146,7 +221,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
               <Input label="Category" value={proj.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
               <Input label="Project Link URL" value={proj.link} onChange={(v: string) => updateArrayItem(i, 'link', v)} />
             </div>
-            <Input label="Image URL" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
+            <ImageUploadField label="Project Image" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
             <Input label="Description" isTextarea value={proj.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
             <Input 
               label="Technologies (Comma-separated)" 
@@ -182,7 +257,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
               <Input label="Category" value={skill.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
             </div>
             <Input label="Description" value={skill.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
-            <Input label="Image/Icon URL" value={skill.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
+            <ImageUploadField label="Skill Logo/Icon" value={skill.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
           </div>
         ))}
         <button
