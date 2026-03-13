@@ -46,7 +46,7 @@ const ImageUploadField = ({ label, value, onChange }: any) => {
         onChange(url);
       } else {
         const errData = await res.json().catch(() => ({ error: 'Unknown server error' }));
-        alert(`Upload gagal: ${errData.error || res.statusText}\n\nPastikan Vercel Blob sudah di-'Connect' di Dashboard Vercel dan dilakukan Re-deploy.`);
+        alert(`Gagal: ${errData.error || res.statusText}\nDetail: ${errData.details || 'Tidak ada detail'}\n\nTips: Coba buka Dashboard Vercel > Storage > Blob, lalu pastikan sudah terhubung (Connected) ke project ini.`);
       }
     } catch (err) {
       alert("Error saat mengupload gamber.");

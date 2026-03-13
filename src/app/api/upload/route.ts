@@ -28,6 +28,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: blob.url });
   } catch (error: any) {
     console.error("Vercel Blob upload failed:", error);
-    return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Upload via Vercel Blob gagal.',
+      details: error.message || 'Unknown error'
+    }, { status: 500 });
   }
 }
