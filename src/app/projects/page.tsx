@@ -84,15 +84,6 @@ export default async function ProjectsArchive() {
                         {project.category}
                       </span>
                     </div>
-
-                    {/* Quick Link icon (if has external link, show it here too over the card) */}
-                    {project.link && (
-                      <div className="absolute top-3 right-3 z-10 transition-opacity duration-300 pointer-events-none md:opacity-0 md:group-hover:opacity-100">
-                        <div className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center p-1.5 focus:outline-none">
-                          <ExternalLink className="text-white/90 w-full h-full" />
-                        </div>
-                      </div>
-                    )}
                   </div>
 
                   {/* Content */}
