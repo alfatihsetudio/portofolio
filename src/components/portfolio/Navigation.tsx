@@ -130,7 +130,13 @@ export default function Navigation() {
                     className="w-full flex items-center justify-between py-5 text-left group"
                   >
                     <span className="text-3xl font-semibold tracking-tight text-white/90 group-hover:text-white transition-colors">
-                      {item.label}
+                      {
+                        item.label === 'About' ? 'Tentang' :
+                        item.label === 'Projects' ? 'Layanan Bisnis' :
+                        item.label === 'Skills' ? 'Keahlian' :
+                        item.label === 'Experience' ? 'Pendidikan' :
+                        item.label === 'Contact' ? 'Kontak' : item.label
+                      }
                     </span>
                     <ChevronRight size={24} className="text-white/20 group-hover:text-white/60 transition-colors" />
                   </button>

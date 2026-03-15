@@ -3,8 +3,8 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import AnimatedText from '@/components/ui/AnimatedText';
-import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 interface Skill {
   name: string;
@@ -29,8 +29,11 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
                       index % 4 === 2 ? '#06b6d4, #3b82f6' : 
                       '#10b981, #06b6d4';
 
+  const slug = skill.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
   return (
-    <motion.div
+    <Link href={`/skills/${slug}`} className="block w-full">
+      <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -80,6 +83,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
         )}
       </div>
     </motion.div>
+    </Link>
   );
 }
 
@@ -101,11 +105,11 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
               <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
             </div>
-            <span className="text-sm font-medium tracking-wide">Back to Home</span>
+            <span className="text-sm font-medium tracking-wide">Kembali ke Beranda</span>
           </Link>
           
           <div className="text-sm font-semibold tracking-widest uppercase text-white/30 hidden sm:block">
-            Full Skills Archive
+            Daftar Lengkap Keahlian
           </div>
         </div>
       </nav>
@@ -113,14 +117,13 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
       <section className="pt-32 px-6 max-w-4xl mx-auto relative z-10 w-full">
         <AnimatedText>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-4">
-            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Skills.</span>
+            Keahlian <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Saya.</span>
           </h1>
         </AnimatedText>
         
         <AnimatedText delay={0.1}>
           <p className="text-base text-white/40 font-light mb-16 max-w-xl">
-            A comprehensive breakdown of the tools, languages, and frameworks I use on a daily basis. 
-            Organized by category.
+            Rincian lengkap dari semua alat, bahasa pemrograman, dan kerangka kerja yang saya gunakan sehari-hari. Disusun berdasarkan kategori.
           </p>
         </AnimatedText>
 

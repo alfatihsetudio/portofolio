@@ -148,7 +148,13 @@ export default function HeroSection({ data }: HeroSectionProps) {
 
               <div className="flex items-center gap-2 flex-1 justify-end sm:justify-start sm:w-full z-10">
                 <span className="text-sm font-semibold text-white/80 group-hover:text-white tracking-wide">
-                  {card.title}
+                  {
+                    card.title === 'About' ? 'Tentang' :
+                    card.title === 'Projects' ? 'Layanan' :
+                    card.title === 'Skills' ? 'Keahlian' :
+                    card.title === 'Experience' ? 'Pendidikan' : // Added this line based on the instruction
+                    card.title === 'Contact' ? 'Kontak' : card.title
+                  }
                 </span>
                 <ArrowRight size={14} className="text-white/30 group-hover:text-white/80 group-hover:translate-x-1 transition-all opacity-0 sm:opacity-100 group-hover:opacity-100 hidden sm:block" />
               </div>

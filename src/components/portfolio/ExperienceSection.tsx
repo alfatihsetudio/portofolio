@@ -78,25 +78,25 @@ export default function ExperienceSection({ data }: ExperienceSectionProps) {
             {/* Section Label */}
             <AnimatedText className="mb-4">
               <span className="text-xs font-medium text-emerald-400 tracking-[0.3em] uppercase">
-                Experience
-              </span>
+              Pendidikan
+            </span>
             </AnimatedText>
 
             {/* Section Title */}
             <AnimatedText delay={0.1}>
               <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-                Where I&apos;ve
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-                  been.
-                </span>
-              </h2>
+              Perjalanan
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                pendidikan saya.
+              </span>
+            </h2>
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/40 font-light mb-8 md:mb-0">
-                My professional journey and milestones.
-              </p>
+              <p className="text-base text-white/40 font-light mb-12">
+              Sejarah sekolah, pencapaian akademis, dan perjalanan belajar saya.
+            </p>
             </AnimatedText>
           </div>
 
@@ -111,7 +111,7 @@ export default function ExperienceSection({ data }: ExperienceSectionProps) {
             ) : (
               <AnimatedText delay={0.3}>
                 <div className="text-center py-20">
-                  <p className="text-white/30 text-sm">No experience listed yet.</p>
+                  <p className="text-white/30 text-sm">Belum ada riwayat pendidikan yang ditambahkan.</p>
                 </div>
               </AnimatedText>
             )}

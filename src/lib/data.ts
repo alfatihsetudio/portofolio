@@ -30,6 +30,8 @@ export interface PortfolioData {
     image: string;
     link: string;
     technologies: string[];
+    price?: string;
+    whatsapp?: string;
   }[];
   skills: {
     name: string;

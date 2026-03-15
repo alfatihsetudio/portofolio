@@ -6,14 +6,13 @@ import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProjectDetail({
-  params,
-}: {
-  params: { id: string };
+export default async function ProjectDetail(props: {
+  params: Promise<{ id: string }>;
 }) {
+  const params = await props.params;
   const { id } = params;
   const data = await getPortfolioData();
-  const project = data.projects.find((p) => p.id === id);
+  const project = data.projects.find((p) => String(p.id) === String(id));
 
   if (!project) {
     notFound();
@@ -43,7 +42,7 @@ export default async function ProjectDetail({
             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
               <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
             </div>
-            <span className="text-sm font-medium tracking-wide">Archive</span>
+            <span className="text-sm font-medium tracking-wide">Arsip</span>
           </Link>
           
           <div className="text-sm font-semibold tracking-widest uppercase text-white/30 truncate max-w-[200px]">
@@ -77,9 +76,6 @@ export default async function ProjectDetail({
             
             {/* Bottom Content inside Image */}
             <div className="absolute bottom-8 left-8 right-8 md:bottom-12 md:left-12 md:right-12">
-              <span className="inline-block px-3 py-1 mb-4 rounded-full bg-white/10 backdrop-blur-md text-[10px] sm:text-xs font-semibold text-white tracking-wider uppercase">
-                {project.category}
-              </span>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-2 leading-tight">
                 {project.title}
               </h1>
@@ -88,38 +84,20 @@ export default async function ProjectDetail({
         </AnimatedText>
       </div>
 
-      <div className="px-6 max-w-4xl mx-auto relative z-10 w-full grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="px-6 max-w-4xl mx-auto relative z-10 w-full flex flex-col-reverse md:grid md:grid-cols-3 gap-12">
         {/* Main Content Info */}
-        <div className="md:col-span-2 order-2 md:order-1 flex flex-col gap-6">
-          <AnimatedText delay={0.1}>
-            <div className="prose prose-invert prose-p:text-white/60 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg max-w-none">
-              <p>{project.description}</p>
-              
-              {/* Note: since JSON description is simple text, we render it directly. If markdown is used in future, parse it here */}
-            </div>
-          </AnimatedText>
-
-          <AnimatedText delay={0.2} className="mt-8 border-t border-white/[0.05] pt-8">
-            <h2 className="text-xl font-bold tracking-tight text-white mb-6">
-              Technologies & Tools
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech, i) => (
-                <span
-                  key={i}
-                  className="px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.05] text-sm text-white/60 font-medium"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </AnimatedText>
+        <div className="md:col-span-2 md:col-start-1 md:row-start-1 w-full flex flex-col gap-6">
+          <div className="text-white bg-black/50 p-6 rounded-3xl border border-white/5 md:bg-transparent md:border-none md:p-0 md:rounded-none">
+            {project.description.split('\n').map((paragraph, index) => (
+              paragraph.trim() ? <p key={index} className="text-white/70 leading-relaxed mb-6 block w-full break-words">{paragraph}</p> : null
+            ))}
+          </div>
         </div>
 
         {/* Info Sidebar */}
-        <div className="md:col-span-1 order-1 md:order-2">
-          <AnimatedText delay={0.1} className="sticky top-28 bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 flex flex-col gap-6 backdrop-blur-xl">
-            <h3 className="text-xs font-semibold text-white/30 tracking-widest uppercase mb-2">Project Info</h3>
+        <div className="md:col-start-3 md:col-span-1 md:row-start-1">
+          <AnimatedText delay={0.1} className="md:sticky md:top-28 bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 flex flex-col gap-6 backdrop-blur-xl">
+            <h3 className="text-xs font-semibold text-white/30 tracking-widest uppercase mb-2">Info Layanan</h3>
             
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-4">
@@ -127,38 +105,62 @@ export default async function ProjectDetail({
                   <Folder size={18} className="text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Category</p>
+                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Kategori</p>
                   <p className="text-sm font-medium text-white/90">{project.category}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-                  <Tag size={18} className="text-purple-400" />
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                  <Tag size={18} className="text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Stack Size</p>
-                  <p className="text-sm font-medium text-white/90">{project.technologies.length} Techs</p>
+                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Harga</p>
+                  <p className="text-sm font-bold text-emerald-400">
+                    {project.price ? (
+                      !isNaN(Number(project.price)) 
+                        ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
+                        : project.price
+                    ) : "Rp 0 (Hubungi Kami)"}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {project.link && (
-              <div className="pt-6 border-t border-white/[0.05] mt-2">
+            <div className="pt-6 border-t border-white/[0.05] mt-2 flex flex-col gap-3">
+              <a
+                href={
+                  project.whatsapp 
+                    ? `https://wa.me/${project.whatsapp.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(`Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
+                    : data.contact?.phone
+                      ? `https://wa.me/${data.contact.phone.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(`Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
+                      : '#'
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-full overflow-hidden rounded-xl p-[1px] flex"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-400 to-green-500 opacity-70 group-hover:opacity-100 transition-opacity" />
+                <div className="relative flex-1 bg-black rounded-xl px-4 py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-black/50">
+                  <span className="text-white text-sm font-semibold tracking-wide">Pesan via WhatsApp</span>
+                  <ExternalLink className="w-4 h-4 text-white/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white transition-all" />
+                </div>
+              </a>
+
+              {project.link && (
                 <a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative w-full overflow-hidden rounded-xl p-[1px] flex"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative flex-1 bg-black rounded-xl px-4 py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-black/50">
-                    <span className="text-white text-sm font-medium">Visit Live Project</span>
-                    <ExternalLink className="w-4 h-4 text-white/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white transition-all" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 opacity-70 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative flex-1 bg-white/[0.05] rounded-xl px-4 py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-white/10 hover:-translate-y-0.5">
+                    <span className="text-white/80 text-sm font-medium">Buka Web Utama</span>
                   </div>
                 </a>
-              </div>
-            )}
+              )}
+            </div>
           </AnimatedText>
         </div>
       </div>

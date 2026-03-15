@@ -41,17 +41,17 @@ export default function AboutSection({ data }: AboutSectionProps) {
             {/* Section Label */}
             <AnimatedText className="mb-4">
               <span className="text-xs font-medium text-blue-400 tracking-[0.3em] uppercase">
-                About
+                Tentang
               </span>
             </AnimatedText>
 
             {/* Section Title */}
             <AnimatedText delay={0.1}>
               <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-8">
-                A little bit
+                 Kenali
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                  about me.
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                  saya lebih jauh.
                 </span>
               </h2>
             </AnimatedText>

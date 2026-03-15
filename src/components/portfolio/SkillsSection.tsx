@@ -33,14 +33,17 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
                       index % 4 === 2 ? '#06b6d4, #3b82f6' : 
                       '#10b981, #06b6d4';
 
+  const slug = skill.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative w-full overflow-hidden rounded-[24px] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-colors flex flex-col sm:flex-row items-stretch"
-    >
+    <Link href={`/skills/${slug}`} className="block w-full">
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        className="group relative w-full overflow-hidden rounded-[24px] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-colors flex flex-col sm:flex-row items-stretch"
+      >
       {/* Image Section */}
       <div className="relative w-full sm:w-48 lg:w-56 shrink-0 aspect-[2/1] sm:aspect-auto overflow-hidden bg-black/20">
         {skill.image ? (
@@ -51,7 +54,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
               className="w-full h-full rounded-2xl border border-white/10 flex items-center justify-center transition-transform duration-700 group-hover:scale-105 group-hover:border-white/20"
               style={{ background: `linear-gradient(135deg, ${gradient})` }}
             >
-              <span className="text-white/20 text-xs tracking-widest uppercase font-medium">No Image</span>
+              <span className="text-white/20 text-xs tracking-widest uppercase font-medium">Tanpa Gambar</span>
             </div>
           </div>
         )}
@@ -79,11 +82,12 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
           </p>
         ) : (
           <p className="text-sm text-white/30 font-light italic">
-            No description available for this skill.
+            Tidak ada deskripsi untuk keahlian ini.
           </p>
         )}
       </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   );
 }
 
@@ -103,24 +107,24 @@ export default function SkillsSection({ data }: SkillsSectionProps) {
             {/* Section Label */}
             <AnimatedText className="mb-4">
               <span className="text-xs font-medium text-cyan-400 tracking-[0.3em] uppercase">
-                Skills
+                Keahlian
               </span>
             </AnimatedText>
 
             {/* Section Title */}
             <AnimatedText delay={0.1}>
               <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-                What I&apos;m
+                Apa yang
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-                  skilled at.
+                  saya kuasai.
                 </span>
               </h2>
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
               <p className="text-base text-white/40 font-light mb-8 md:mb-0">
-                Technologies, languages, and tools I use to bring ideas to life.
+                Teknologi, bahasa pemrograman, dan alat yang saya gunakan untuk mewujudkan ide.
               </p>
             </AnimatedText>
           </div>
@@ -144,7 +148,7 @@ export default function SkillsSection({ data }: SkillsSectionProps) {
                     href="/skills"
                     className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] transition-all"
                   >
-                    View all skills
+                    Lihat semua keahlian
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </AnimatedText>
@@ -152,7 +156,7 @@ export default function SkillsSection({ data }: SkillsSectionProps) {
             ) : (
               <AnimatedText delay={0.3}>
                 <div className="text-center py-20">
-                  <p className="text-white/30 text-sm">No skills listed yet.</p>
+                  <p className="text-white/30 text-sm">Belum ada keahlian yang ditambahkan.</p>
                 </div>
               </AnimatedText>
             )}

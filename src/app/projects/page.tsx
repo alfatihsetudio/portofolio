@@ -24,7 +24,7 @@ export default async function ProjectsArchive() {
             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
               <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
             </div>
-            <span className="text-sm font-medium tracking-wide">Back to Home</span>
+            <span className="text-sm font-medium tracking-wide">Kembali ke Beranda</span>
           </Link>
           
           <div className="text-sm font-semibold tracking-widest uppercase text-white/30 hidden sm:block">
@@ -36,14 +36,13 @@ export default async function ProjectsArchive() {
       <section className="pt-32 pb-24 px-6 max-w-6xl mx-auto relative z-10">
         <AnimatedText>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-4">
-            All <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Projects.</span>
+            Layanan & <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Bisnis.</span>
           </h1>
         </AnimatedText>
         
         <AnimatedText delay={0.1}>
           <p className="text-base text-white/40 font-light mb-16 max-w-xl">
-            A complete archive of everything I&apos;ve designed and built.
-            Click on any project to see its detailed description and links.
+            Kumpulan opsi layanan dan bisnis terlengkap yang bisa Anda pesan. Klik pada layanan mana saja untuk melihat detail, harga, dan fitur yang akan Anda dapatkan.
           </p>
         </AnimatedText>
 
@@ -102,21 +101,18 @@ export default async function ProjectsArchive() {
                       {project.title}
                     </h3>
 
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                      {project.technologies.slice(0, 2).map((tech, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-0.5 rounded-md bg-white/[0.04] text-[10px] text-white/40 font-medium whitespace-nowrap"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 2 && (
-                        <span className="px-2 py-0.5 rounded-md bg-white/[0.04] text-[10px] text-white/40 font-medium">
-                          +{project.technologies.length - 2}
-                        </span>
-                      )}
+                    {/* Description */}
+                    <p className="text-xs text-white/40 font-light leading-relaxed mb-4 line-clamp-2">
+                      {project.description || "Tuliskan deskripsi singkat jasa Anda di sini..."}
+                    </p>
+
+                    {/* Harga */}
+                    <div className="mt-auto">
+                      <span className="px-3 py-1.5 rounded-md bg-emerald-500/10 text-xs text-emerald-400 font-bold whitespace-nowrap border border-emerald-500/20">
+                        {project.price && !isNaN(Number(project.price)) 
+                          ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
+                          : project.price ? project.price : "Rp 0"}
+                      </span>
                     </div>
                   </div>
                 </div>

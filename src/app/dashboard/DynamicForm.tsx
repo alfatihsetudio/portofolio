@@ -151,11 +151,11 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   if (activeTab === 'hero') {
     return (
       <div className="space-y-2">
-        <Input label="Name" value={sectionData.name} onChange={(v: string) => updateField('name', v)} />
-        <Input label="Title (e.g., Creative Developer)" value={sectionData.title} onChange={(v: string) => updateField('title', v)} />
-        <Input label="Subtitle" isTextarea value={sectionData.subtitle} onChange={(v: string) => updateField('subtitle', v)} />
-        <Input label="Tagline (e.g., Design. Build. Inspire.)" value={sectionData.tagline} onChange={(v: string) => updateField('tagline', v)} />
-        <ImageUploadField label="Avatar Image" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} />
+        <Input label="Nama" value={sectionData.name} onChange={(v: string) => updateField('name', v)} />
+        <Input label="Gelar / Profesi (contoh: Web Developer / Pelajar)" value={sectionData.title} onChange={(v: string) => updateField('title', v)} />
+        <Input label="Subjudul / Deskripsi Singkat" isTextarea value={sectionData.subtitle} onChange={(v: string) => updateField('subtitle', v)} />
+        <Input label="Slogan (contoh: Design. Build. Inspire.)" value={sectionData.tagline} onChange={(v: string) => updateField('tagline', v)} />
+        <ImageUploadField label="Foto Profil" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} />
       </div>
     );
   }
@@ -163,10 +163,10 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   if (activeTab === 'about') {
     return (
       <div className="space-y-6">
-        <Input label="About Description" isTextarea value={sectionData.description} onChange={(v: string) => updateField('description', v)} />
+        <Input label="Deskripsi Tentang Saya" isTextarea value={sectionData.description} onChange={(v: string) => updateField('description', v)} />
         
         <div>
-          <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-4">Highlights (Bullet Points)</label>
+          <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-4">Poin Utama (Highlights)</label>
           <div className="space-y-3">
             {sectionData.highlights.map((hlt: string, i: number) => (
               <div key={i} className="flex gap-3">
@@ -193,10 +193,10 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
               </div>
             ))}
             <button
-              onClick={() => updateField('highlights', [...sectionData.highlights, "New highlight"])}
+              onClick={() => updateField('highlights', [...sectionData.highlights, "Poin baru"])}
               className="flex items-center gap-2 mt-2 px-4 py-2 rounded-lg bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors"
             >
-              <Plus size={16} /> Add Highlight
+              <Plus size={16} /> Tambah Poin
             </button>
           </div>
         </div>
@@ -205,29 +205,31 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   }
 
   if (activeTab === 'projects') {
-    const defaultProject = { id: Date.now().toString(), title: "New Project", description: "", category: "Web App", image: "", link: "", technologies: ["React"] };
+    const defaultProject = { id: Date.now().toString(), title: "Layanan Baru", description: "", category: "Jasa", image: "", link: "", technologies: [], price: "", whatsapp: "" };
     return (
       <div className="space-y-8">
         {sectionData.map((proj: any, i: number) => (
-          <div key={proj.id || i} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
+          <div key={`project-${i}`} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <button onClick={() => removeArrayItem(i)} className="p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20">
                 <Trash2 size={16} />
               </button>
             </div>
-            <h3 className="font-semibold text-lg mb-4 text-cyan-400">Project #{i + 1}</h3>
-            <Input label="ID (Lowercase URL Slug)" value={proj.id} onChange={(v: string) => updateArrayItem(i, 'id', v)} />
-            <Input label="Title" value={proj.title} onChange={(v: string) => updateArrayItem(i, 'title', v)} />
+            <h3 className="font-semibold text-lg mb-4 text-cyan-400">Layanan Bisnis #{i + 1}</h3>
+            <Input label="ID (URL Slug tanpa spasi)" value={proj.id} onChange={(v: string) => updateArrayItem(i, 'id', v)} />
+            <Input label="Nama Jasa / Bisnis" value={proj.title} onChange={(v: string) => updateArrayItem(i, 'title', v)} />
             <div className="flex gap-4">
-              <Input label="Category" value={proj.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
-              <Input label="Project Link URL" value={proj.link} onChange={(v: string) => updateArrayItem(i, 'link', v)} />
+              <Input label="Kategori Jasa" value={proj.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
+              <Input label="Harga Jasa (contoh: Rp 50.000 / Gratis)" value={proj.price || ''} onChange={(v: string) => updateArrayItem(i, 'price', v)} />
             </div>
-            <ImageUploadField label="Project Image" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
-            <Input label="Description" isTextarea value={proj.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
+            <Input label="Nomor WA Khusus Jasa Ini (contoh: 08123.. Kosongkan jika pakai WA utama)" value={proj.whatsapp || ''} onChange={(v: string) => updateArrayItem(i, 'whatsapp', v)} />
+            <Input label="URL Link Web Utama (Opsional)" value={proj.link} onChange={(v: string) => updateArrayItem(i, 'link', v)} />
+            <ImageUploadField label="Gambar / Foto Jasa" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
             <Input 
-              label="Technologies (Comma-separated)" 
-              value={(proj.technologies || []).join(', ')} 
-              onChange={(v: string) => updateArrayItem(i, 'technologies', v.split(',').map(s => s.trim()))} 
+              label="Deskripsi Lengkap Jasa (Gunakan tombol ENTER / baris baru untuk membuat paragraf baru)" 
+              isTextarea 
+              value={proj.description} 
+              onChange={(v: string) => updateArrayItem(i, 'description', v)} 
             />
           </div>
         ))}
@@ -235,7 +237,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
           onClick={() => addArrayItem(defaultProject)}
           className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/50 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
         >
-          <Plus size={18} /> Add New Project
+          <Plus size={18} /> Tambah Layanan Baru
         </button>
       </div>
     );
@@ -246,19 +248,19 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
     return (
       <div className="space-y-8">
         {sectionData.map((skill: any, i: number) => (
-          <div key={skill.name + i} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
+          <div key={`skill-${i}`} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <button onClick={() => removeArrayItem(i)} className="p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20">
                 <Trash2 size={16} />
               </button>
             </div>
-            <h3 className="font-semibold text-lg mb-4 text-emerald-400">Skill #{i + 1}</h3>
+            <h3 className="font-semibold text-lg mb-4 text-emerald-400">Keahlian #{i + 1}</h3>
             <div className="flex gap-4">
-              <Input label="Name" value={skill.name} onChange={(v: string) => updateArrayItem(i, 'name', v)} />
-              <Input label="Category" value={skill.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
+              <Input label="Nama Keahlian" value={skill.name} onChange={(v: string) => updateArrayItem(i, 'name', v)} />
+              <Input label="Kategori" value={skill.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
             </div>
-            <Input label="Description" value={skill.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
-            <ImageUploadField label="Skill Logo/Icon" value={skill.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
+            <Input label="Deskripsi" value={skill.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
+            <ImageUploadField label="Logo / Ikon Keahlian" value={skill.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
           </div>
         ))}
         <button
@@ -276,19 +278,19 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
     return (
       <div className="space-y-8">
         {sectionData.map((exp: any, i: number) => (
-          <div key={exp.id || i} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
+          <div key={`exp-${i}`} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative group">
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <button onClick={() => removeArrayItem(i)} className="p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20">
                 <Trash2 size={16} />
               </button>
             </div>
-            <h3 className="font-semibold text-lg mb-4 text-purple-400">Experience #{i + 1}</h3>
+            <h3 className="font-semibold text-lg mb-4 text-purple-400">Pendidikan #{i + 1}</h3>
             <div className="flex gap-4">
-              <Input label="Role" value={exp.role} onChange={(v: string) => updateArrayItem(i, 'role', v)} />
-              <Input label="Company" value={exp.company} onChange={(v: string) => updateArrayItem(i, 'company', v)} />
+              <Input label="Gelar / Jurusan" value={exp.role} onChange={(v: string) => updateArrayItem(i, 'role', v)} />
+              <Input label="Sekolah / Universitas" value={exp.company} onChange={(v: string) => updateArrayItem(i, 'company', v)} />
             </div>
-            <Input label="Period (e.g. 2021 - 2024)" value={exp.period} onChange={(v: string) => updateArrayItem(i, 'period', v)} />
-            <Input label="Description" isTextarea value={exp.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
+            <Input label="Periode (contoh: 2021 - 2024)" value={exp.period} onChange={(v: string) => updateArrayItem(i, 'period', v)} />
+            <Input label="Deskripsi" isTextarea value={exp.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
           </div>
         ))}
         <button
@@ -304,12 +306,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   if (activeTab === 'contact') {
     return (
       <div className="space-y-6">
-        <h3 className="font-semibold text-lg text-pink-400">Basic Info</h3>
-        <Input label="Email Address" value={sectionData.email} onChange={(v: string) => updateField('email', v)} />
-        <Input label="Phone Number" value={sectionData.phone} onChange={(v: string) => updateField('phone', v)} />
-        <Input label="Location (e.g. Jakarta, Indonesia)" value={sectionData.location} onChange={(v: string) => updateField('location', v)} />
+        <h3 className="font-semibold text-lg text-pink-400">Info Dasar</h3>
+        <Input label="Alamat Email" value={sectionData.email} onChange={(v: string) => updateField('email', v)} />
+        <Input label="Nomor Telepon" value={sectionData.phone} onChange={(v: string) => updateField('phone', v)} />
+        <Input label="Domisili (contoh: Jakarta, Indonesia)" value={sectionData.location} onChange={(v: string) => updateField('location', v)} />
         
-        <h3 className="font-semibold text-lg text-pink-400 mt-8 mb-4 border-t border-white/10 pt-6">Social Media URLs</h3>
+        <h3 className="font-semibold text-lg text-pink-400 mt-8 mb-4 border-t border-white/10 pt-6">Tautan Sosial Media</h3>
         <Input label="GitHub" value={sectionData.social.github} onChange={(v: string) => updateNestedField('social', 'github', v)} placeholder="https://github.com/..." />
         <Input label="LinkedIn" value={sectionData.social.linkedin} onChange={(v: string) => updateNestedField('social', 'linkedin', v)} placeholder="https://linkedin.com/..." />
         <Input label="Instagram" value={sectionData.social.instagram} onChange={(v: string) => updateNestedField('social', 'instagram', v)} placeholder="https://instagram.com/..." />

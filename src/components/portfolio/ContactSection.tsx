@@ -38,25 +38,24 @@ export default function ContactSection({ data }: ContactSectionProps) {
           {/* Left Column: Text and Socials */}
           <div className="flex-1 md:w-1/2">
             <AnimatedText className="mb-4">
-              <span className="text-xs font-medium text-blue-400 tracking-[0.3em] uppercase">
-                Contact
+              <span className="text-xs font-medium text-orange-400 tracking-[0.3em] uppercase">
+                Kontak
               </span>
             </AnimatedText>
 
             <AnimatedText delay={0.1}>
-              <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-6">
-                Let&apos;s build
+              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
+                Mari kita
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
-                  something amazing.
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
+                  bekerja sama.
                 </span>
               </h2>
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/40 font-light mb-12 md:mb-16 leading-relaxed max-w-md">
-                I&apos;m currently available for freelance work and full-time opportunities.
-                If you have a project that needs some creative magic, I&apos;d love to hear from you.
+              <p className="text-base text-white/40 font-light">
+                Selalu terbuka untuk ide-ide baru, peluang, atau sekadar mengobrol tentang teknologi dan desain.
               </p>
             </AnimatedText>
 
@@ -127,7 +126,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                       <Phone className="text-purple-400 w-5 h-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">Phone</p>
+                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">No. Telp</p>
                       <p className="text-sm font-medium text-white/90 group-hover:text-white">{data.phone}</p>
                     </div>
                     <ArrowUpRight className="text-white/20 group-hover:text-white/80 w-5 h-5 transition-colors" />
@@ -142,7 +141,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                       <MapPin className="text-pink-400 w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">Location</p>
+                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">Lokasi</p>
                       <p className="text-sm font-medium text-white/90">{data.location}</p>
                     </div>
                   </div>

@@ -14,6 +14,8 @@ interface Project {
   image: string;
   link: string;
   technologies: string[];
+  price?: string;
+  whatsapp?: string;
 }
 
 interface ProjectsSectionProps {
@@ -22,10 +24,11 @@ interface ProjectsSectionProps {
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <motion.div
-      className="group relative h-full focus:outline-none"
-      whileTap={{ scale: 0.97 }}
-    >
+    <Link href={`/projects/${project.id}`} className="block w-full h-full" draggable={false}>
+      <motion.div
+        className="group relative h-full focus:outline-none"
+        whileTap={{ scale: 0.97 }}
+      >
       <div className="relative overflow-hidden rounded-[20px] bg-white/[0.03] border border-white/[0.06] flex flex-col h-full">
         {/* Image placeholder / gradient */}
         <div className="relative aspect-[4/5] overflow-hidden shrink-0">
@@ -64,14 +67,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           {/* Link icon */}
           {project.link && (
             <div className="absolute top-3 right-3 z-10">
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(project.link, '_blank', 'noopener,noreferrer');
+                }}
                 className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center p-1.5 focus:outline-none"
               >
                 <ExternalLink className="text-white/90 w-full h-full" />
-              </a>
+              </button>
             </div>
           )}
         </div>
@@ -85,36 +89,31 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {project.description}
           </p>
 
-          {/* Tech tags */}
-          <div className="flex flex-wrap gap-1.5 mt-auto">
-            {project.technologies.slice(0, 2).map((tech, i) => (
-              <span
-                key={i}
-                className="px-2 py-0.5 rounded-md bg-white/[0.04] text-[10px] text-white/40 font-medium whitespace-nowrap"
-              >
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 2 && (
-              <span className="px-2 py-0.5 rounded-md bg-white/[0.04] text-[10px] text-white/40 font-medium">
-                +{project.technologies.length - 2}
-              </span>
-            )}
+          {/* Harga */}
+          <div className="mt-auto">
+            <span className="px-3 py-1.5 rounded-md bg-emerald-500/10 text-xs text-emerald-400 font-bold whitespace-nowrap border border-emerald-500/20">
+              {project.price && !isNaN(Number(project.price)) 
+                ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
+                : project.price ? project.price : "Rp 0"}
+            </span>
           </div>
         </div>
       </div>
     </motion.div>
+    </Link>
   );
 }
 
 export default function ProjectsSection({ data }: ProjectsSectionProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasMoved, setHasMoved] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
+    setHasMoved(false);
     if (carouselRef.current) {
       setStartX(e.pageX - carouselRef.current.offsetLeft);
       setScrollLeft(carouselRef.current.scrollLeft);
@@ -123,17 +122,29 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    setHasMoved(false);
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    // don't immediately reset setHasMoved(false) here or the click event might trigger 
+    // immediately after pointer-events is restored. Wait for the click to consume or use a timeout.
+    // Actually, setting it false on a short timeout is safer, or just let mousedown handle the reset.
+    setTimeout(() => setHasMoved(false), 50);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !carouselRef.current) return;
-    e.preventDefault();
+    
     const x = e.pageX - carouselRef.current.offsetLeft;
     const walk = (x - startX) * 1.5; // Natural scroll speed multiplier
+    
+    // Only detect as a drag if moved more than 5px to avoid swallowing normal clicks
+    if (Math.abs(walk) > 5) {
+      setHasMoved(true);
+      e.preventDefault();
+    }
+    
     carouselRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -145,25 +156,25 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
       <div className="relative z-10 max-w-lg md:max-w-5xl mx-auto">
         {/* Section Label */}
         <AnimatedText className="mb-4">
-          <span className="text-xs font-medium text-purple-400 tracking-[0.3em] uppercase">
-            Projects
+          <span className="text-xs font-medium text-pink-400 tracking-[0.3em] uppercase">
+            Layanan & Bisnis
           </span>
         </AnimatedText>
 
         {/* Section Title */}
         <AnimatedText delay={0.1}>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-            Selected
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            Apa yang bisa
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              works.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+              saya tawarkan...
             </span>
           </h2>
         </AnimatedText>
 
         <AnimatedText delay={0.2}>
-          <p className="text-base text-white/40 font-light mb-12 max-w-xl">
-            A curated collection of projects that showcase my skills and passion.
+          <p className="text-base text-white/40 font-light mb-8 md:mb-0">
+            Kumpulan layanan jasa dan bisnis yang tersedia dan siap membantu kebutuhan Anda.
           </p>
         </AnimatedText>
 
@@ -181,22 +192,22 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
           style={{ scrollBehavior: isDragging ? 'auto' : 'smooth' }}
         >
           {data.slice(0, 3).map((project, index) => (
-            <div key={project.id} className={`shrink-0 w-[calc(50vw-32px)] md:w-[320px] flex h-[auto] min-h-[300px] ${isDragging ? 'pointer-events-none' : ''}`}>
+            <div key={project.id} className={`shrink-0 w-[calc(50vw-32px)] md:w-[320px] flex h-[auto] min-h-[300px] ${hasMoved ? 'pointer-events-none' : ''}`}>
               <ProjectCard project={project} index={index} />
             </div>
           ))}
           
           {/* View More Card */}
           {data.length > 0 && (
-            <div className={`shrink-0 w-[calc(50vw-32px)] md:w-[320px] flex h-[auto] min-h-[300px] ${isDragging ? 'pointer-events-none' : ''}`}>
+            <div className={`shrink-0 w-[calc(50vw-32px)] md:w-[320px] flex h-[auto] min-h-[300px] ${hasMoved ? 'pointer-events-none' : ''}`}>
               <Link href="/projects" className="w-full h-full group" draggable={false}>
                 <div className="w-full h-full rounded-[20px] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.05] transition-colors flex flex-col items-center justify-center p-6 gap-4">
                   <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white text-white/50 group-hover:text-black transition-all">
                     <ArrowRight size={20} />
                   </div>
                   <div className="text-center">
-                    <p className="text-sm font-medium text-white/90 mb-1">View Full Archive</p>
-                    <p className="text-xs text-white/40">Explore all projects</p>
+                    <p className="text-sm font-medium text-white/90 mb-1">Lihat Semua Layanan</p>
+                    <p className="text-xs text-white/40">Telusuri penawaran lainnya</p>
                   </div>
                 </div>
               </Link>
@@ -211,7 +222,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
         {data.length > 0 && (
           <AnimatedText delay={0.4}>
             <div className="mt-8 flex items-center justify-center gap-2 text-white/30 md:hidden">
-              <span className="text-[10px] tracking-[0.2em] uppercase font-medium">Swipe to explore</span>
+              <span className="text-[10px] tracking-[0.2em] uppercase font-medium">Geser untuk melihat</span>
               <motion.div
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
@@ -225,7 +236,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
         {data.length === 0 && (
           <AnimatedText delay={0.3}>
             <div className="text-center py-20">
-              <p className="text-white/30 text-sm">No projects yet. Add some from the dashboard!</p>
+              <p className="text-white/30 text-sm">Belum ada layanan. Tambahkan lewat halaman dashboard!</p>
             </div>
           </AnimatedText>
         )}
