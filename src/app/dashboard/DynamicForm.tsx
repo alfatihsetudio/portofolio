@@ -163,49 +163,14 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   if (activeTab === 'about') {
     return (
       <div className="space-y-6">
+        <ImageUploadField label="Foto Utama (Opsional, 1x1 direkomendasikan)" value={sectionData.image} onChange={(v: string) => updateField('image', v)} />
         <Input label="Deskripsi Tentang Saya" isTextarea value={sectionData.description} onChange={(v: string) => updateField('description', v)} />
-        
-        <div>
-          <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-4">Poin Utama (Highlights)</label>
-          <div className="space-y-3">
-            {sectionData.highlights.map((hlt: string, i: number) => (
-              <div key={i} className="flex gap-3">
-                <input
-                  type="text"
-                  value={hlt}
-                  onChange={(e) => {
-                    const newH = [...sectionData.highlights];
-                    newH[i] = e.target.value;
-                    updateField('highlights', newH);
-                  }}
-                  className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
-                />
-                <button
-                  onClick={() => {
-                    const newH = [...sectionData.highlights];
-                    newH.splice(i, 1);
-                    updateField('highlights', newH);
-                  }}
-                  className="w-12 flex items-center justify-center bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 transition-colors"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            ))}
-            <button
-              onClick={() => updateField('highlights', [...sectionData.highlights, "Poin baru"])}
-              className="flex items-center gap-2 mt-2 px-4 py-2 rounded-lg bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors"
-            >
-              <Plus size={16} /> Tambah Poin
-            </button>
-          </div>
-        </div>
       </div>
     );
   }
 
   if (activeTab === 'projects') {
-    const defaultProject = { id: Date.now().toString(), title: "Layanan Baru", description: "", category: "Jasa", image: "", link: "", technologies: [], price: "", whatsapp: "" };
+    const defaultProject = { id: Date.now().toString(), title: "Layanan Baru", description: "", category: "Jasa", image: "", technologies: [], price: "", whatsapp: "", whatsappText: "" };
     return (
       <div className="space-y-8">
         {sectionData.map((proj: any, i: number) => (
@@ -220,10 +185,16 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
             <Input label="Nama Jasa / Bisnis" value={proj.title} onChange={(v: string) => updateArrayItem(i, 'title', v)} />
             <div className="flex gap-4">
               <Input label="Kategori Jasa" value={proj.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
-              <Input label="Harga Jasa (contoh: Rp 50.000 / Gratis)" value={proj.price || ''} onChange={(v: string) => updateArrayItem(i, 'price', v)} />
+              <Input label="Harga Jasa (Hanya Angka, contoh: 50000. Kosongkan jika Gratis)" value={proj.price || ''} onChange={(v: string) => updateArrayItem(i, 'price', v.replace(/\D/g, ''))} />
             </div>
-            <Input label="Nomor WA Khusus Jasa Ini (contoh: 08123.. Kosongkan jika pakai WA utama)" value={proj.whatsapp || ''} onChange={(v: string) => updateArrayItem(i, 'whatsapp', v)} />
-            <Input label="URL Link Web Utama (Opsional)" value={proj.link} onChange={(v: string) => updateArrayItem(i, 'link', v)} />
+            <Input label="Nomor WA Khusus Jasa Ini (contoh: 08123.. Kosongkan jika pakai WA utama)" value={proj.whatsapp || ''} onChange={(v: string) => updateArrayItem(i, 'whatsapp', v.replace(/\D/g, ''))} />
+            <Input 
+              label="Teks Pesan WhatsApp Otomatis (Teks pembuka saat klien chat Anda)" 
+              isTextarea 
+              value={proj.whatsappText || ''} 
+              onChange={(v: string) => updateArrayItem(i, 'whatsappText', v)} 
+              placeholder="Halo, saya tertarik dengan jasa ini..."
+            />
             <ImageUploadField label="Gambar / Foto Jasa" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
             <Input 
               label="Deskripsi Lengkap Jasa (Gunakan tombol ENTER / baris baru untuk membuat paragraf baru)" 
@@ -308,14 +279,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
       <div className="space-y-6">
         <h3 className="font-semibold text-lg text-pink-400">Info Dasar</h3>
         <Input label="Alamat Email" value={sectionData.email} onChange={(v: string) => updateField('email', v)} />
-        <Input label="Nomor Telepon" value={sectionData.phone} onChange={(v: string) => updateField('phone', v)} />
+        <Input label="Nomor Telepon / WA Utama" value={sectionData.phone} onChange={(v: string) => updateField('phone', v.replace(/[^0-9+-\s]/g, ''))} />
         <Input label="Domisili (contoh: Jakarta, Indonesia)" value={sectionData.location} onChange={(v: string) => updateField('location', v)} />
         
         <h3 className="font-semibold text-lg text-pink-400 mt-8 mb-4 border-t border-white/10 pt-6">Tautan Sosial Media</h3>
         <Input label="GitHub" value={sectionData.social.github} onChange={(v: string) => updateNestedField('social', 'github', v)} placeholder="https://github.com/..." />
-        <Input label="LinkedIn" value={sectionData.social.linkedin} onChange={(v: string) => updateNestedField('social', 'linkedin', v)} placeholder="https://linkedin.com/..." />
         <Input label="Instagram" value={sectionData.social.instagram} onChange={(v: string) => updateNestedField('social', 'instagram', v)} placeholder="https://instagram.com/..." />
-        <Input label="Twitter / X" value={sectionData.social.twitter} onChange={(v: string) => updateNestedField('social', 'twitter', v)} placeholder="https://x.com/..." />
       </div>
     );
   }

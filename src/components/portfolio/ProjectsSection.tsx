@@ -12,10 +12,10 @@ interface Project {
   description: string;
   category: string;
   image: string;
-  link: string;
   technologies: string[];
   price?: string;
   whatsapp?: string;
+  whatsappText?: string;
 }
 
 interface ProjectsSectionProps {
@@ -63,21 +63,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               {project.category}
             </span>
           </div>
-
-          {/* Link icon */}
-          {project.link && (
-            <div className="absolute top-3 right-3 z-10">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open(project.link, '_blank', 'noopener,noreferrer');
-                }}
-                className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center p-1.5 focus:outline-none"
-              >
-                <ExternalLink className="text-white/90 w-full h-full" />
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Content */}
@@ -149,7 +134,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
   };
 
   return (
-    <section id="projects" className="relative py-16 md:py-24 px-6 overflow-hidden">
+    <section id="projects" className="relative pt-8 pb-16 md:pt-16 md:pb-24 px-6 overflow-hidden">
       {/* Background */}
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[200px] pointer-events-none" />
 

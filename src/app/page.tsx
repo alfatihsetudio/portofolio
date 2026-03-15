@@ -4,7 +4,6 @@ import HeroSection from '@/components/portfolio/HeroSection';
 import AboutSection from '@/components/portfolio/AboutSection';
 import ProjectsSection from '@/components/portfolio/ProjectsSection';
 import SkillsSection from '@/components/portfolio/SkillsSection';
-import ExperienceSection from '@/components/portfolio/ExperienceSection';
 import ContactSection from '@/components/portfolio/ContactSection';
 import Footer from '@/components/portfolio/Footer';
 import ScrollProgress from '@/components/ui/ScrollProgress';
@@ -28,7 +27,6 @@ export default async function Home() {
       <AboutSection data={data.about} />
       <ProjectsSection data={data.projects} />
       <SkillsSection data={data.skills} />
-      <ExperienceSection data={data.experience} />
       <ContactSection data={data.contact} />
 
       {/* Footer */}

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import AnimatedText from '@/components/ui/AnimatedText';
-import { Mail, Phone, MapPin, Github, Linkedin, Instagram, Twitter, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Linkedin, Instagram, Twitter, ArrowUpRight, MessageCircle } from 'lucide-react';
 
 interface ContactData {
   email: string;
@@ -23,9 +23,13 @@ interface ContactSectionProps {
 export default function ContactSection({ data }: ContactSectionProps) {
   const socialLinks = [
     { name: 'GitHub', url: data.social?.github, icon: Github, color: 'hover:text-white' },
-    { name: 'LinkedIn', url: data.social?.linkedin, icon: Linkedin, color: 'hover:text-blue-400' },
     { name: 'Instagram', url: data.social?.instagram, icon: Instagram, color: 'hover:text-pink-400' },
-    { name: 'Twitter', url: data.social?.twitter, icon: Twitter, color: 'hover:text-sky-400' },
+    { 
+      name: 'WhatsApp', 
+      url: data.phone ? `https://wa.me/${data.phone.replace(/\D/g, '').replace(/^0/, '62')}` : undefined, 
+      icon: MessageCircle, 
+      color: 'hover:text-emerald-400' 
+    },
   ].filter(link => link.url); // Only show if URL exists
 
   return (

@@ -22,8 +22,10 @@
       "description": "A revolutionary mobile application that transforms how people interact with their daily routines.",
       "category": "Mobile App",
       "image": "",
-      "link": "",
-      "technologies": ["React Native", "Node.js", "MongoDB"]
+      "technologies": ["React Native", "Node.js", "MongoDB"],
+      "price": "",
+      "whatsapp": "",
+      "whatsappText": ""
     },
     {
       "id": "2",
@@ -31,8 +33,10 @@
       "description": "An elegant web platform for creative professionals to showcase their work with stunning visual presentations.",
       "category": "Web Platform",
       "image": "",
-      "link": "",
-      "technologies": ["Next.js", "TypeScript", "PostgreSQL"]
+      "technologies": ["Next.js", "TypeScript", "PostgreSQL"],
+      "price": "",
+      "whatsapp": "",
+      "whatsappText": ""
     },
     {
       "id": "3",
@@ -40,8 +44,10 @@
       "description": "A cutting-edge design system built for scalability, consistency, and beautiful user interfaces.",
       "category": "Design System",
       "image": "",
-      "link": "",
-      "technologies": ["Figma", "React", "Storybook"]
+      "technologies": ["Figma", "React", "Storybook"],
+      "price": "",
+      "whatsapp": "",
+      "whatsappText": ""
     }
   ],
   "skills": [

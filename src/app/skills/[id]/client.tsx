@@ -54,11 +54,11 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
       </nav>
 
       {/* Main Content */}
-      <section className="pt-32 px-6 max-w-4xl mx-auto relative z-10 w-full flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
+      <section className="pt-24 px-6 max-w-4xl mx-auto relative z-10 w-full flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
         
         {/* Left Side: Avatar / Big Block */}
-        <AnimatedText className="w-full md:w-1/3 shrink-0">
-          <div className="w-full aspect-square rounded-[32px] overflow-hidden bg-white/[0.02] border border-white/5 p-4 flex items-center justify-center relative group">
+        <AnimatedText className="w-full md:w-2/5 lg:w-1/3 shrink-0">
+          <div className="w-full aspect-[2/1] rounded-[32px] overflow-hidden bg-white/[0.02] border border-white/5 p-4 flex items-center justify-center relative group">
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-gradient-to-tr from-cyan-500/10 to-transparent pointer-events-none" />
             
             {skill.image ? (
@@ -98,24 +98,6 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
             </h1>
           </AnimatedText>
 
-          {/* Level Bar View */}
-          <AnimatedText delay={0.3}>
-            <div className="mb-10 w-full max-w-sm">
-                <div className="flex justify-between items-end mb-2">
-                   <h3 className="text-sm font-semibold text-white/40 uppercase tracking-widest">Tingkat Penguasaan</h3>
-                   <span className="text-sm font-medium text-white/70">{skill.level}%</span>
-                </div>
-                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                   <div 
-                      className="h-full rounded-full animate-pulse" 
-                      style={{ 
-                        width: `${skill.level}%`, 
-                        background: `linear-gradient(90deg, ${dotGradient})`
-                      }} 
-                   />
-                </div>
-            </div>
-          </AnimatedText>
 
           <AnimatedText delay={0.4}>
             <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 md:p-8 backdrop-blur-sm">

@@ -52,9 +52,9 @@ export default async function ProjectDetail(props: {
       </nav>
 
       {/* Hero Image Section */}
-      <div className="pt-24 px-6 max-w-6xl mx-auto relative z-10 w-full mb-12">
+      <div className="pt-20 md:pt-24 px-4 md:px-6 max-w-6xl mx-auto relative z-10 w-full mb-6 md:mb-12">
         <AnimatedText>
-          <div className="relative w-full aspect-[4/3] md:aspect-[21/9] rounded-[32px] overflow-hidden bg-white/[0.03] border border-white/[0.06]">
+          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl md:rounded-[32px] overflow-hidden bg-white/[0.03] border border-white/[0.06]">
             {project.image ? (
               <img
                 src={project.image}
@@ -75,8 +75,8 @@ export default async function ProjectDetail(props: {
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
             
             {/* Bottom Content inside Image */}
-            <div className="absolute bottom-8 left-8 right-8 md:bottom-12 md:left-12 md:right-12">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-2 leading-tight">
+            <div className="absolute bottom-4 left-4 right-4 md:bottom-12 md:left-12 md:right-12">
+              <h1 className="text-3xl md:text-6xl font-bold tracking-tight text-white mb-0 md:mb-2 leading-tight">
                 {project.title}
               </h1>
             </div>
@@ -84,56 +84,56 @@ export default async function ProjectDetail(props: {
         </AnimatedText>
       </div>
 
-      <div className="px-6 max-w-4xl mx-auto relative z-10 w-full flex flex-col-reverse md:grid md:grid-cols-3 gap-12">
+      <div className="px-4 md:px-6 max-w-4xl mx-auto relative z-10 w-full flex flex-col-reverse md:grid md:grid-cols-3 gap-4 md:gap-12">
         {/* Main Content Info */}
-        <div className="md:col-span-2 md:col-start-1 md:row-start-1 w-full flex flex-col gap-6">
-          <div className="text-white bg-black/50 p-6 rounded-3xl border border-white/5 md:bg-transparent md:border-none md:p-0 md:rounded-none">
+        <div className="md:col-span-2 md:col-start-1 md:row-start-1 w-full flex flex-col gap-4 md:gap-6">
+          <div className="text-white bg-black/50 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-white/5 md:bg-transparent md:border-none md:p-0 md:rounded-none text-sm md:text-base">
             {project.description.split('\n').map((paragraph, index) => (
-              paragraph.trim() ? <p key={index} className="text-white/70 leading-relaxed mb-6 block w-full break-words">{paragraph}</p> : null
+              paragraph.trim() ? <p key={index} className="text-white/70 leading-relaxed mb-3 md:mb-6 block w-full break-words">{paragraph}</p> : null
             ))}
           </div>
         </div>
 
         {/* Info Sidebar */}
         <div className="md:col-start-3 md:col-span-1 md:row-start-1">
-          <AnimatedText delay={0.1} className="md:sticky md:top-28 bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 flex flex-col gap-6 backdrop-blur-xl">
-            <h3 className="text-xs font-semibold text-white/30 tracking-widest uppercase mb-2">Info Layanan</h3>
+          <AnimatedText delay={0.1} className="md:sticky md:top-28 bg-white/[0.02] border border-white/[0.05] rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col gap-4 md:gap-6 backdrop-blur-xl">
+            <h3 className="text-[10px] md:text-xs font-semibold text-white/30 tracking-widest uppercase mb-0 md:mb-2 text-center md:text-left">Info Layanan</h3>
             
-            <div className="flex flex-col gap-4">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                  <Folder size={18} className="text-blue-400" />
+            <div className="flex flex-row md:flex-col justify-between md:justify-start gap-4">
+              <div className="flex items-center md:items-start gap-3 md:gap-4 flex-1">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                  <Folder className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Kategori</p>
-                  <p className="text-sm font-medium text-white/90">{project.category}</p>
+                  <p className="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase mb-0.5 md:mb-1">Kategori</p>
+                  <p className="text-xs md:text-sm font-medium text-white/90">{project.category}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                  <Tag size={18} className="text-emerald-400" />
+              <div className="flex items-center md:items-start gap-3 md:gap-4 flex-1">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                  <Tag className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">Harga</p>
-                  <p className="text-sm font-bold text-emerald-400">
+                  <p className="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase mb-0.5 md:mb-1">Harga</p>
+                  <p className="text-xs md:text-sm font-bold text-emerald-400 line-clamp-1">
                     {project.price ? (
                       !isNaN(Number(project.price)) 
                         ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
                         : project.price
-                    ) : "Rp 0 (Hubungi Kami)"}
+                    ) : "Rp 0 (Hubungi)"}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/[0.05] mt-2 flex flex-col gap-3">
+            <div className="pt-4 md:pt-6 border-t border-white/[0.05] mt-0 md:mt-2 flex flex-col gap-2 md:gap-3">
               <a
                 href={
                   project.whatsapp 
-                    ? `https://wa.me/${project.whatsapp.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(`Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
+                    ? `https://wa.me/${project.whatsapp.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(project.whatsappText || `Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
                     : data.contact?.phone
-                      ? `https://wa.me/${data.contact.phone.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(`Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
+                      ? `https://wa.me/${data.contact.phone.replace(/\D/g, '').replace(/^0/, '62')}?text=${encodeURIComponent(project.whatsappText || `Halo, saya tertarik dan ingin memesan jasa: ${project.title}`)}`
                       : '#'
                 }
                 target="_blank"
@@ -141,25 +141,11 @@ export default async function ProjectDetail(props: {
                 className="group relative w-full overflow-hidden rounded-xl p-[1px] flex"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-emerald-400 to-green-500 opacity-70 group-hover:opacity-100 transition-opacity" />
-                <div className="relative flex-1 bg-black rounded-xl px-4 py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-black/50">
-                  <span className="text-white text-sm font-semibold tracking-wide">Pesan via WhatsApp</span>
-                  <ExternalLink className="w-4 h-4 text-white/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white transition-all" />
+                <div className="relative flex-1 bg-black rounded-xl px-4 py-2.5 md:py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-black/50">
+                  <span className="text-white text-xs md:text-sm font-semibold tracking-wide">Pesan via WhatsApp</span>
+                  <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4 text-white/70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white transition-all" />
                 </div>
               </a>
-
-              {project.link && (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative w-full overflow-hidden rounded-xl p-[1px] flex"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 opacity-70 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative flex-1 bg-white/[0.05] rounded-xl px-4 py-3 flex items-center justify-center gap-2 transition-all group-hover:bg-white/10 hover:-translate-y-0.5">
-                    <span className="text-white/80 text-sm font-medium">Buka Web Utama</span>
-                  </div>
-                </a>
-              )}
             </div>
           </AnimatedText>
         </div>

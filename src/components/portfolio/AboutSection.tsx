@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import AnimatedText from '@/components/ui/AnimatedText';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 interface AboutSectionProps {
   data: {
@@ -24,20 +26,36 @@ export default function AboutSection({ data }: AboutSectionProps) {
     <section
       id="about"
       ref={sectionRef}
-      className="relative pt-10 pb-16 md:pb-24 px-6 overflow-hidden"
+      className="relative pt-10 pb-8 px-6 overflow-hidden"
     >
       {/* Background accent */}
       <motion.div
         style={{ y: backgroundY }}
         className="absolute top-0 left-0 right-0 h-full pointer-events-none"
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[200px]" />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.04, 0.08, 0.04],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[200px]" 
+        />
       </motion.div>
 
-      <div className="relative z-10 max-w-lg md:max-w-5xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-12 md:gap-20 items-center">
-          {/* Left Column: Text Content */}
-          <div className="flex-1 w-full">
+      {/* Animated divider line at top */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent origin-center"
+      />
+
+      <div className="relative z-10 max-w-lg md:max-w-5xl mx-auto text-left">
+        <div className="flex flex-col gap-6 items-start">
+          {/* Text Content */}
+          <div className="w-full">
             {/* Section Label */}
             <AnimatedText className="mb-4">
               <span className="text-xs font-medium text-blue-400 tracking-[0.3em] uppercase">
@@ -47,7 +65,7 @@ export default function AboutSection({ data }: AboutSectionProps) {
 
             {/* Section Title */}
             <AnimatedText delay={0.1}>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-6">
                  Kenali
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
@@ -58,48 +76,28 @@ export default function AboutSection({ data }: AboutSectionProps) {
 
             {/* Description */}
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/50 font-light leading-relaxed mb-8 md:mb-0">
+              <p className="text-base text-white/50 font-light leading-relaxed line-clamp-4 md:line-clamp-6 mb-8 md:mb-10">
                 {data.description}
               </p>
             </AnimatedText>
-          </div>
 
-          {/* Right Column: Highlights */}
-          <div className="flex-1 w-full">
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {data.highlights.map((highlight, index) => (
-                <AnimatedText key={index} delay={0.3 + index * 0.1}>
-                  <motion.div
-                    className="group relative p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden"
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {/* Hover gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Number */}
-                    <span className="block text-2xl font-bold text-white/10 mb-2">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    
-                    {/* Text */}
-                    <span className="relative text-sm font-medium text-white/70">
-                      {highlight}
-                    </span>
-                  </motion.div>
-                </AnimatedText>
-              ))}
-            </div>
+            {/* Link to detail page */}
+            <AnimatedText delay={0.3}>
+              <Link
+                href="/about"
+                className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-300 overflow-hidden"
+              >
+                <motion.div
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: 'easeInOut' }}
+                  className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 pointer-events-none"
+                />
+                Lihat detail & riwayat pendidikan
+                <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+              </Link>
+            </AnimatedText>
           </div>
         </div>
-
-        {/* Decorative line */}
-        <AnimatedText delay={0.6}>
-          <div className="mt-16 flex items-center gap-4">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            <span className="text-[10px] text-white/20 tracking-[0.3em] uppercase">∞</span>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </div>
-        </AnimatedText>
       </div>
     </section>
   );

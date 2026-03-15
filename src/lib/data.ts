@@ -21,6 +21,7 @@ export interface PortfolioData {
   about: {
     description: string;
     highlights: string[];
+    image?: string;
   };
   projects: {
     id: string;
@@ -28,10 +29,10 @@ export interface PortfolioData {
     description: string;
     category: string;
     image: string;
-    link: string;
     technologies: string[];
     price?: string;
     whatsapp?: string;
+    whatsappText?: string;
   }[];
   skills: {
     name: string;
