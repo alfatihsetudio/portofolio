@@ -33,24 +33,11 @@ export default function AboutSection({ data }: AboutSectionProps) {
         style={{ y: backgroundY }}
         className="absolute top-0 left-0 right-0 h-full pointer-events-none"
       >
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.04, 0.08, 0.04],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[200px]" 
-        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[200px]" />
       </motion.div>
 
-      {/* Animated divider line at top */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent origin-center"
-      />
+      {/* Divider line */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
 
       <div className="relative z-10 max-w-lg md:max-w-5xl mx-auto text-left">
         <div className="flex flex-col gap-6 items-start">
@@ -85,13 +72,8 @@ export default function AboutSection({ data }: AboutSectionProps) {
             <AnimatedText delay={0.3}>
               <Link
                 href="/about"
-                className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-300 overflow-hidden"
+                className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-300"
               >
-                <motion.div
-                  animate={{ x: ['-100%', '200%'] }}
-                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, ease: 'easeInOut' }}
-                  className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 pointer-events-none"
-                />
                 Lihat detail & riwayat pendidikan
                 <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform duration-300" />
               </Link>

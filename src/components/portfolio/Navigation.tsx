@@ -116,27 +116,27 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col pt-28 px-6"
+            className="md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center px-6"
           >
-            <nav className="flex flex-col w-full max-w-lg mx-auto">
+            <nav className="flex flex-col w-full max-w-sm mx-auto">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.label}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  exit={{ opacity: 0, y: -8 }}
                   transition={{
-                    duration: 0.4,
-                    delay: index * 0.05,
+                    duration: 0.3,
+                    delay: index * 0.04,
                     ease: [0.25, 0.4, 0.25, 1],
                   }}
-                  className="w-full border-b border-white/[0.08] last:border-none"
+                  className="w-full border-b border-white/[0.06] last:border-none"
                 >
                   <button
                     onClick={() => handleNavClick(item.href)}
-                    className="w-full flex items-center justify-between py-5 text-left group"
+                    className="w-full flex items-center justify-between py-4 text-left group"
                   >
-                    <span className="text-3xl font-semibold tracking-tight text-white/90 group-hover:text-white transition-colors">
+                    <span className="text-lg font-medium tracking-tight text-white/80 group-hover:text-white transition-colors">
                       {
                         item.label === 'About' ? 'Tentang' :
                         item.label === 'Projects' ? 'Layanan Bisnis' :
@@ -145,7 +145,7 @@ export default function Navigation() {
                         item.label === 'Contact' ? 'Kontak' : item.label
                       }
                     </span>
-                    <ChevronRight size={24} className="text-white/20 group-hover:text-white/60 transition-colors" />
+                    <ChevronRight size={16} className="text-white/15 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all" />
                   </button>
                 </motion.div>
               ))}
