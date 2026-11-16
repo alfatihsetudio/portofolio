@@ -1,11 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { randomUUID } from 'crypto';
 
 import { kv } from '@vercel/kv';
-import { get, put } from '@vercel/blob';
+import { get, list, put } from '@vercel/blob';
 
 const dataFilePath = path.join(process.cwd(), 'src', 'data', 'portfolio.json');
 const portfolioBlobPath = 'portfolio/portfolio.json';
+const portfolioSnapshotPrefix = 'portfolio/snapshots/';
 
 // Check if Vercel KV is configured via environment variables that Vercel injects
 const isVercelKVConfigured = () => {
@@ -69,7 +71,23 @@ export interface PortfolioData {
 export async function getPortfolioData(): Promise<PortfolioData> {
   if (isVercelBlobConfigured()) {
     try {
-      const blob = await get(portfolioBlobPath, { access: 'public' });
+      let latestBlob: { url: string; uploadedAt: Date } | undefined;
+      let cursor: string | undefined;
+
+      do {
+        const page = await list({ prefix: portfolioSnapshotPrefix, limit: 1000, cursor });
+        for (const blob of page.blobs) {
+          if (!latestBlob || blob.uploadedAt > latestBlob.uploadedAt) {
+            latestBlob = blob;
+          }
+        }
+        cursor = page.hasMore ? page.cursor : undefined;
+      } while (cursor);
+
+      const blob = latestBlob
+        ? await get(latestBlob.url, { access: 'public' })
+        : await get(portfolioBlobPath, { access: 'public' });
+
       if (blob?.stream) {
         return JSON.parse(await new Response(blob.stream).text()) as PortfolioData;
       }
@@ -98,10 +116,9 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 export async function savePortfolioData(data: PortfolioData): Promise<void> {
   if (isVercelBlobConfigured()) {
     try {
-      await put(portfolioBlobPath, JSON.stringify(data), {
+      await put(`${portfolioSnapshotPrefix}${randomUUID()}.json`, JSON.stringify(data), {
         access: 'public',
         addRandomSuffix: false,
-        allowOverwrite: true,
         cacheControlMaxAge: 60,
         contentType: 'application/json',
       });

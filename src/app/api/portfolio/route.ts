@@ -32,6 +32,13 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     await savePortfolioData(data);
 
+    if (typeof data.hero?.avatar === 'string' && data.hero.avatar.trim()) {
+      const savedData = await getPortfolioData();
+      if (savedData.hero.avatar !== data.hero.avatar) {
+        throw new Error('Foto profil belum bisa dibaca kembali setelah disimpan. Silakan coba simpan sekali lagi.');
+      }
+    }
+
     return NextResponse.json(
       { message: 'Portfolio data updated successfully' },
       { status: 200 }
