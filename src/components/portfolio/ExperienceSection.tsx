@@ -48,16 +48,16 @@ function TimelineItem({ experience, index }: { experience: Experience; index: nu
 
       {/* Content */}
       <div className="group">
-        <span className="text-[10px] font-medium text-white/30 tracking-[0.2em] uppercase">
+        <span className="text-[10px] font-medium text-white/50 tracking-[0.2em] uppercase">
           {experience.period}
         </span>
         <h3 className="text-lg font-semibold text-white mt-1 tracking-tight group-hover:text-blue-400 transition-colors">
           {experience.role}
         </h3>
-        <p className="text-sm text-white/40 font-medium mt-0.5 mb-2">
+        <p className="text-sm text-white/60 font-medium mt-0.5 mb-2">
           {experience.company}
         </p>
-        <p className="text-sm text-white/30 font-light leading-relaxed">
+        <p className="text-sm text-white/50 font-normal leading-relaxed">
           {experience.description}
         </p>
       </div>
@@ -94,7 +94,7 @@ export default function ExperienceSection({ data }: ExperienceSectionProps) {
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/40 font-light mb-12">
+              <p className="text-base text-white/60 font-normal mb-12">
               Sejarah sekolah, pencapaian akademis, dan perjalanan belajar saya.
             </p>
             </AnimatedText>
@@ -111,7 +111,7 @@ export default function ExperienceSection({ data }: ExperienceSectionProps) {
             ) : (
               <AnimatedText delay={0.3}>
                 <div className="text-center py-20">
-                  <p className="text-white/30 text-sm">Belum ada riwayat pendidikan yang ditambahkan.</p>
+                  <p className="text-white/50 text-sm">Belum ada riwayat pendidikan yang ditambahkan.</p>
                 </div>
               </AnimatedText>
             )}

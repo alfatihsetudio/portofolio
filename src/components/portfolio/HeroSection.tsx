@@ -73,7 +73,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
             ) : (
               <div className="text-center p-4">
                 <User className="w-8 h-8 mx-auto text-white/20 mb-2" />
-                <span className="text-[10px] text-white/30 uppercase tracking-widest leading-tight block">
+                <span className="text-[10px] text-white/50 uppercase tracking-widest leading-tight block">
                   Avatar<br/>Space
                 </span>
               </div>
@@ -110,7 +110,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg sm:text-xl md:text-2xl text-white/60 font-light leading-relaxed max-w-lg mx-auto"
+            className="text-lg sm:text-xl md:text-2xl text-white/60 font-normal leading-relaxed max-w-lg mx-auto"
           >
             {data.subtitle}
           </motion.p>
@@ -135,7 +135,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
               
-              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 group-hover:text-white group-hover:bg-white/10 transition-all z-10 shrink-0">
+              <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 group-hover:text-white group-hover:bg-white/10 transition-all z-10 shrink-0">
                 <card.icon size={18} />
               </div>
 
@@ -161,7 +161,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
           transition={{ delay: 1.5 }}
           className="mt-16 flex flex-col items-center gap-2"
         >
-          <span className="text-[10px] text-white/20 tracking-[0.3em] uppercase">Scroll</span>
+          <span className="text-[10px] text-white/40 tracking-[0.3em] uppercase">Scroll</span>
           <div className="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center p-1">
             <div className="hero-scroll-dot w-1 h-1 rounded-full bg-white/40" />
           </div>

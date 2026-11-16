@@ -24,6 +24,7 @@
       "image": "",
       "technologies": ["React Native", "Node.js", "MongoDB"],
       "price": "",
+      "website": "",
       "whatsapp": "",
       "whatsappText": ""
     },
@@ -35,6 +36,7 @@
       "image": "",
       "technologies": ["Next.js", "TypeScript", "PostgreSQL"],
       "price": "",
+      "website": "",
       "whatsapp": "",
       "whatsappText": ""
     },
@@ -46,6 +48,7 @@
       "image": "",
       "technologies": ["Figma", "React", "Storybook"],
       "price": "",
+      "website": "",
       "whatsapp": "",
       "whatsappText": ""
     }

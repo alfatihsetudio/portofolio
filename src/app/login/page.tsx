@@ -59,7 +59,7 @@ export default function LoginPage() {
             <h1 className="text-2xl font-semibold text-white mb-2 tracking-tight">
               Admin Access
             </h1>
-            <p className="text-sm text-white/40 font-light">
+            <p className="text-sm text-white/60 font-normal">
               Enter your master password to continue
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Master Password"
-                  className="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
+                  className="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/40 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
                   required
                 />
               </div>
@@ -107,7 +107,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-8 text-center">
-            <a href="/" className="text-xs text-white/30 hover:text-white/70 transition-colors uppercase tracking-widest">
+            <a href="/" className="text-xs text-white/50 hover:text-white/70 transition-colors uppercase tracking-widest">
               ← Back to site
             </a>
           </div>

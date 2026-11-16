@@ -47,7 +47,7 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
             <span className="text-sm font-medium tracking-wide">Kembali ke Keahlian</span>
           </Link>
           
-          <div className="text-sm font-semibold tracking-widest uppercase text-white/30 hidden sm:block">
+          <div className="text-sm font-semibold tracking-widest uppercase text-white/50 hidden sm:block">
             {skill.category}
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
                    className="w-3 h-3 rounded-full shadow-[0_0_12px_rgba(255,255,255,0.8)]"
                    style={{ background: `linear-gradient(135deg, ${dotGradient})` }}
                  />
-                <span className="text-white/30 text-xs font-semibold tracking-[0.2em] uppercase">Keahlian Tech</span>
+                <span className="text-white/50 text-xs font-semibold tracking-[0.2em] uppercase">Keahlian Tech</span>
               </div>
             )}
           </div>
@@ -86,7 +86,7 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ background: `linear-gradient(135deg, ${dotGradient})` }}
                 />
-              <span className="text-xs font-semibold text-white/50 tracking-[0.2em] uppercase">
+              <span className="text-xs font-semibold text-white/60 tracking-[0.2em] uppercase">
                 {skill.category}
               </span>
             </div>
@@ -101,8 +101,8 @@ export default function SkillDetailClient({ skill }: { skill: Skill }) {
 
           <AnimatedText delay={0.4}>
             <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 md:p-8 backdrop-blur-sm">
-              <h3 className="text-sm font-semibold text-white/40 uppercase tracking-widest mb-6">Tentang Teknologi Ini</h3>
-              <p className="text-white/70 leading-loose font-light sm:text-lg">
+              <h3 className="text-sm font-semibold text-white/60 uppercase tracking-widest mb-6">Tentang Teknologi Ini</h3>
+              <p className="text-white/70 leading-loose font-normal sm:text-lg">
                 {skill.description || `Saya telah banyak membangun proyek menggunakan ${skill.name}. Teknologi ini adalah bagian inti dari pekerjaan saya untuk membantu saya membuat proyek dan aplikasi digital yang modern.`}
               </p>
             </div>

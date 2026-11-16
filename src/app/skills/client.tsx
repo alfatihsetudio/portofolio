@@ -50,7 +50,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
               className="w-full h-full rounded-2xl border border-white/10 flex items-center justify-center transition-transform duration-700 group-hover:scale-105 group-hover:border-white/20"
               style={{ background: `linear-gradient(135deg, ${gradient})` }}
             >
-              <span className="text-white/20 text-xs tracking-widest uppercase font-medium">No Image</span>
+              <span className="text-white/40 text-xs tracking-widest uppercase font-medium">No Image</span>
             </div>
           </div>
         )}
@@ -63,7 +63,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
             className="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.3)] group-hover:shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-shadow"
             style={{ background: `linear-gradient(135deg, ${dotGradient})` }}
           />
-          <span className="text-[10px] font-semibold text-white/40 tracking-widest uppercase">
+          <span className="text-[10px] font-semibold text-white/60 tracking-widest uppercase">
             {skill.category}
           </span>
         </div>
@@ -73,11 +73,11 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
         </h3>
         
         {skill.description ? (
-          <p className="text-sm text-white/50 leading-relaxed font-light line-clamp-2 sm:line-clamp-3">
+          <p className="text-sm text-white/60 leading-relaxed font-normal line-clamp-2 sm:line-clamp-3">
             {skill.description}
           </p>
         ) : (
-          <p className="text-sm text-white/30 font-light italic">
+          <p className="text-sm text-white/50 font-normal italic">
             No description available for this skill.
           </p>
         )}
@@ -108,7 +108,7 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
             <span className="text-sm font-medium tracking-wide">Kembali ke Beranda</span>
           </Link>
           
-          <div className="text-sm font-semibold tracking-widest uppercase text-white/30 hidden sm:block">
+          <div className="text-sm font-semibold tracking-widest uppercase text-white/50 hidden sm:block">
             Daftar Lengkap Keahlian
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
         </AnimatedText>
         
         <AnimatedText delay={0.1}>
-          <p className="text-base text-white/40 font-light mb-16 max-w-xl">
+          <p className="text-base text-white/60 font-normal mb-16 max-w-xl">
             Rincian lengkap dari semua alat, bahasa pemrograman, dan kerangka kerja yang saya gunakan sehari-hari. Disusun berdasarkan kategori.
           </p>
         </AnimatedText>
@@ -155,7 +155,7 @@ export default function SkillsClient({ data }: { data: Skill[] }) {
           </div>
         ) : (
           <AnimatedText delay={0.2}>
-            <div className="py-20 text-center text-white/30 text-sm">
+            <div className="py-20 text-center text-white/50 text-sm">
               No skills listed yet.
             </div>
           </AnimatedText>

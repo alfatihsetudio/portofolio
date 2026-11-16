@@ -14,6 +14,7 @@ interface Project {
   image: string;
   technologies: string[];
   price?: string;
+  website?: string;
   whatsapp?: string;
   whatsappText?: string;
 }
@@ -23,69 +24,92 @@ interface ProjectsSectionProps {
 }
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const websiteUrl = (() => {
+    const value = project.website?.trim();
+    if (!value) return '';
+
+    try {
+      const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
+      return ['http:', 'https:'].includes(url.protocol) ? url.toString() : '';
+    } catch {
+      return '';
+    }
+  })();
+
   return (
-    <Link href={`/projects/${project.id}`} className="block w-full h-full" draggable={false}>
-      <motion.div
-        className="group relative h-full focus:outline-none"
-        whileTap={{ scale: 0.97 }}
-      >
+    <motion.div
+      className="group relative h-full w-full focus:outline-none"
+      whileTap={{ scale: 0.97 }}
+    >
       <div className="relative overflow-hidden rounded-[20px] bg-white/[0.03] border border-white/[0.06] flex flex-col h-full">
-        {/* Image placeholder / gradient */}
-        <div className="relative aspect-[4/5] overflow-hidden shrink-0">
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          ) : (
-            <div className={`w-full h-full bg-gradient-to-br ${
-              index % 3 === 0
-                ? 'from-blue-500/20 via-blue-600/10 to-purple-500/20'
-                : index % 3 === 1
-                ? 'from-purple-500/20 via-pink-500/10 to-rose-500/20'
-                : 'from-cyan-500/20 via-teal-500/10 to-emerald-500/20'
-            } group-hover:scale-105 transition-transform duration-700`}>
-              {/* Geometric pattern */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className={`w-16 h-16 rounded-2xl border border-white/10 rotate-45 group-hover:rotate-[135deg] transition-transform duration-700`} />
-                <div className={`absolute w-10 h-10 rounded-xl border border-white/5 -rotate-12 group-hover:rotate-[78deg] transition-transform duration-700`} />
+        <Link href={`/projects/${project.id}`} className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400" draggable={false}>
+          {/* Image placeholder / gradient */}
+          <div className="relative aspect-[4/5] overflow-hidden shrink-0">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            ) : (
+              <div className={`w-full h-full bg-gradient-to-br ${
+                index % 3 === 0
+                  ? 'from-blue-500/20 via-blue-600/10 to-purple-500/20'
+                  : index % 3 === 1
+                  ? 'from-purple-500/20 via-pink-500/10 to-rose-500/20'
+                  : 'from-cyan-500/20 via-teal-500/10 to-emerald-500/20'
+              } group-hover:scale-105 transition-transform duration-700`}>
+                {/* Geometric pattern */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl border border-white/10 rotate-45 group-hover:rotate-[135deg] transition-transform duration-700" />
+                  <div className="absolute w-10 h-10 rounded-xl border border-white/5 -rotate-12 group-hover:rotate-[78deg] transition-transform duration-700" />
+                </div>
               </div>
+            )}
+
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+            {/* Category badge */}
+            <div className="absolute top-3 left-3">
+              <span className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-sm text-[9px] font-medium text-white/90 tracking-wider uppercase">
+                {project.category}
+              </span>
             </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-4 flex flex-col flex-1">
+            <h3 className="text-sm font-bold text-white mb-1.5 tracking-tight line-clamp-2 pr-2">
+              {project.title}
+            </h3>
+            <p className="text-xs text-white/80 font-semibold leading-relaxed mb-4 line-clamp-2">
+              {project.description}
+            </p>
+          </div>
+        </Link>
+
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 px-4 pb-4">
+          <span className="px-3 py-1.5 rounded-md bg-emerald-500/10 text-xs text-emerald-400 font-bold whitespace-nowrap border border-emerald-500/20">
+            {project.price && !isNaN(Number(project.price))
+              ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
+              : project.price ? project.price : "Rp 0"}
+          </span>
+          {websiteUrl && (
+            <a
+              href={websiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Buka website ${project.title} di tab baru`}
+              className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-xs font-medium text-white/80 transition-colors hover:border-pink-400/40 hover:bg-pink-400/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400"
+            >
+              <ExternalLink size={13} aria-hidden="true" />
+              Website
+            </a>
           )}
-
-          {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-          {/* Category badge */}
-          <div className="absolute top-3 left-3">
-            <span className="px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-sm text-[9px] font-medium text-white/90 tracking-wider uppercase">
-              {project.category}
-            </span>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-4 flex flex-col flex-1">
-          <h3 className="text-sm font-semibold text-white mb-1.5 tracking-tight line-clamp-2 pr-2">
-            {project.title}
-          </h3>
-          <p className="text-xs text-white/40 font-light leading-relaxed mb-4 line-clamp-2">
-            {project.description}
-          </p>
-
-          {/* Harga */}
-          <div className="mt-auto">
-            <span className="px-3 py-1.5 rounded-md bg-emerald-500/10 text-xs text-emerald-400 font-bold whitespace-nowrap border border-emerald-500/20">
-              {project.price && !isNaN(Number(project.price)) 
-                ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(project.price))
-                : project.price ? project.price : "Rp 0"}
-            </span>
-          </div>
         </div>
       </div>
     </motion.div>
-    </Link>
   );
 }
 
@@ -158,7 +182,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
         </AnimatedText>
 
         <AnimatedText delay={0.2}>
-          <p className="text-base text-white/40 font-light mb-8 md:mb-0">
+          <p className="text-base text-white/60 font-normal mb-8 md:mb-0">
             Kumpulan layanan jasa dan bisnis yang tersedia dan siap membantu kebutuhan Anda.
           </p>
         </AnimatedText>
@@ -187,12 +211,12 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
             <div className={`shrink-0 w-[calc(50vw-32px)] md:w-[320px] flex h-[auto] min-h-[300px] ${hasMoved ? 'pointer-events-none' : ''}`}>
               <Link href="/projects" className="w-full h-full group" draggable={false}>
                 <div className="w-full h-full rounded-[20px] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.05] transition-colors flex flex-col items-center justify-center p-6 gap-4">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white text-white/50 group-hover:text-black transition-all">
+                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white text-white/60 group-hover:text-black transition-all">
                     <ArrowRight size={20} />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-medium text-white/90 mb-1">Lihat Semua Layanan</p>
-                    <p className="text-xs text-white/40">Telusuri penawaran lainnya</p>
+                    <p className="text-xs text-white/60">Telusuri penawaran lainnya</p>
                   </div>
                 </div>
               </Link>
@@ -206,7 +230,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
         {/* Swipe Indicator (Mobile Only) */}
         {data.length > 0 && (
           <AnimatedText delay={0.4}>
-            <div className="mt-8 flex items-center justify-center gap-2 text-white/30 md:hidden">
+            <div className="mt-8 flex items-center justify-center gap-2 text-white/50 md:hidden">
               <span className="text-[10px] tracking-[0.2em] uppercase font-medium">Geser untuk melihat</span>
               <motion.div
                 animate={{ x: [0, 5, 0] }}
@@ -221,7 +245,7 @@ export default function ProjectsSection({ data }: ProjectsSectionProps) {
         {data.length === 0 && (
           <AnimatedText delay={0.3}>
             <div className="text-center py-20">
-              <p className="text-white/30 text-sm">Belum ada layanan. Tambahkan lewat halaman dashboard!</p>
+              <p className="text-white/50 text-sm">Belum ada layanan. Tambahkan lewat halaman dashboard!</p>
             </div>
           </AnimatedText>
         )}

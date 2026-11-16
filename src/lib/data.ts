@@ -2,13 +2,17 @@ import fs from 'fs';
 import path from 'path';
 
 import { kv } from '@vercel/kv';
+import { get, put } from '@vercel/blob';
 
 const dataFilePath = path.join(process.cwd(), 'src', 'data', 'portfolio.json');
+const portfolioBlobPath = 'portfolio/portfolio.json';
 
 // Check if Vercel KV is configured via environment variables that Vercel injects
 const isVercelKVConfigured = () => {
-  return process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
 };
+
+const isVercelBlobConfigured = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 export interface PortfolioData {
   hero: {
@@ -31,6 +35,7 @@ export interface PortfolioData {
     image: string;
     technologies: string[];
     price?: string;
+    website?: string;
     whatsapp?: string;
     whatsappText?: string;
   }[];
@@ -62,36 +67,65 @@ export interface PortfolioData {
 }
 
 export async function getPortfolioData(): Promise<PortfolioData> {
+  if (isVercelBlobConfigured()) {
+    try {
+      const blob = await get(portfolioBlobPath, { access: 'public' });
+      if (blob?.stream) {
+        return JSON.parse(await new Response(blob.stream).text()) as PortfolioData;
+      }
+    } catch (e) {
+      console.error('Vercel Blob fetch error, trying Vercel KV', e);
+    }
+  }
+
   if (isVercelKVConfigured()) {
     try {
       const data = await kv.get<PortfolioData>('portfolio_data');
       if (data) return data;
     } catch (e) {
-      console.error("Vercel KV fetch error, falling back to local file", e);
+      console.error('Vercel KV fetch error, falling back to local file', e);
     }
   }
 
-  // Fallback to local file if no Redis or fetch failed (default behavior)
+  // The JSON file remains the fallback for local development and initial data.
   try {
-    // Dynamic import to avoid build-time caching issues, but still bundled by Next.js
-    const localData = await import('@/data/portfolio.json');
-    return localData.default as PortfolioData;
+    return JSON.parse(fs.readFileSync(dataFilePath, 'utf-8')) as PortfolioData;
   } catch {
     return getDefaultData();
   }
 }
 
 export async function savePortfolioData(data: PortfolioData): Promise<void> {
-  if (isVercelKVConfigured()) {
+  if (isVercelBlobConfigured()) {
     try {
-      await kv.set('portfolio_data', data);
-      return; // If KV save succeeds, skip writing to local fs
+      await put(portfolioBlobPath, JSON.stringify(data), {
+        access: 'public',
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        cacheControlMaxAge: 60,
+        contentType: 'application/json',
+      });
+      return;
     } catch (e) {
-      console.error("Vercel KV save error, falling back to local file", e);
+      console.error('Vercel Blob save error', e);
+      throw new Error('Gagal menyimpan data ke Vercel Blob. Periksa koneksi dan token Blob di pengaturan proyek Vercel.');
     }
   }
 
-  // Fallback to local file if no Redis (e.g. Local Development)
+  if (isVercelKVConfigured()) {
+    try {
+      await kv.set('portfolio_data', data);
+      return;
+    } catch (e) {
+      console.error('Vercel KV save error, falling back to local file', e);
+    }
+  }
+
+  if (process.env.VERCEL === '1') {
+    throw new Error('Penyimpanan persisten belum dikonfigurasi. Hubungkan Vercel Blob atau Upstash Redis ke proyek ini.');
+  }
+
+  // Local development fallback
   const dirPath = path.dirname(dataFilePath);
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });

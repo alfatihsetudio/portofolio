@@ -45,7 +45,7 @@ export default async function ProjectDetail(props: {
             <span className="text-sm font-medium tracking-wide">Arsip</span>
           </Link>
           
-          <div className="text-sm font-semibold tracking-widest uppercase text-white/30 truncate max-w-[200px]">
+          <div className="text-sm font-semibold tracking-widest uppercase text-white/50 truncate max-w-[200px]">
             {project.title}
           </div>
         </div>
@@ -89,7 +89,7 @@ export default async function ProjectDetail(props: {
         <div className="md:col-span-2 md:col-start-1 md:row-start-1 w-full flex flex-col gap-4 md:gap-6">
           <div className="text-white bg-black/50 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-white/5 md:bg-transparent md:border-none md:p-0 md:rounded-none text-sm md:text-base">
             {project.description.split('\n').map((paragraph, index) => (
-              paragraph.trim() ? <p key={index} className="text-white/70 leading-relaxed mb-3 md:mb-6 block w-full break-words">{paragraph}</p> : null
+              paragraph.trim() ? <p key={index} className="text-white/90 font-medium leading-relaxed mb-3 md:mb-6 block w-full break-words">{paragraph}</p> : null
             ))}
           </div>
         </div>
@@ -97,7 +97,7 @@ export default async function ProjectDetail(props: {
         {/* Info Sidebar */}
         <div className="md:col-start-3 md:col-span-1 md:row-start-1">
           <AnimatedText delay={0.1} className="md:sticky md:top-28 bg-white/[0.02] border border-white/[0.05] rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col gap-4 md:gap-6 backdrop-blur-xl">
-            <h3 className="text-[10px] md:text-xs font-semibold text-white/30 tracking-widest uppercase mb-0 md:mb-2 text-center md:text-left">Info Layanan</h3>
+            <h3 className="text-[10px] md:text-xs font-semibold text-white/50 tracking-widest uppercase mb-0 md:mb-2 text-center md:text-left">Info Layanan</h3>
             
             <div className="flex flex-row md:flex-col justify-between md:justify-start gap-4">
               <div className="flex items-center md:items-start gap-3 md:gap-4 flex-1">
@@ -105,7 +105,7 @@ export default async function ProjectDetail(props: {
                   <Folder className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase mb-0.5 md:mb-1">Kategori</p>
+                  <p className="text-[9px] md:text-[10px] text-white/60 tracking-widest uppercase mb-0.5 md:mb-1">Kategori</p>
                   <p className="text-xs md:text-sm font-medium text-white/90">{project.category}</p>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export default async function ProjectDetail(props: {
                   <Tag className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-[9px] md:text-[10px] text-white/40 tracking-widest uppercase mb-0.5 md:mb-1">Harga</p>
+                  <p className="text-[9px] md:text-[10px] text-white/60 tracking-widest uppercase mb-0.5 md:mb-1">Harga</p>
                   <p className="text-xs md:text-sm font-bold text-emerald-400 line-clamp-1">
                     {project.price ? (
                       !isNaN(Number(project.price)) 

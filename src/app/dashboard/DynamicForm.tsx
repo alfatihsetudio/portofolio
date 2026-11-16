@@ -4,7 +4,7 @@ import { useState } from 'react';
 // ================= Helper Component =================
 const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }: any) => (
   <div className="mb-4 w-full">
-    <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{label}</label>
+    <label className="block text-xs font-semibold text-white/60 uppercase tracking-widest mb-2">{label}</label>
     {isTextarea ? (
       <textarea
         value={value || ''}
@@ -57,7 +57,7 @@ const ImageUploadField = ({ label, value, onChange }: any) => {
 
   return (
     <div className="mb-4 w-full">
-      <label className="block text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{label}</label>
+      <label className="block text-xs font-semibold text-white/60 uppercase tracking-widest mb-2">{label}</label>
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
         {/* Preview & Text URL Input */}
         <div className="flex-1 w-full relative">
@@ -170,7 +170,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   }
 
   if (activeTab === 'projects') {
-    const defaultProject = { id: Date.now().toString(), title: "Layanan Baru", description: "", category: "Jasa", image: "", technologies: [], price: "", whatsapp: "", whatsappText: "" };
+    const createDefaultProject = () => ({ id: Date.now().toString(), title: "Layanan Baru", description: "", category: "Jasa", image: "", technologies: [], price: "", website: "", whatsapp: "", whatsappText: "" });
     return (
       <div className="space-y-8">
         {sectionData.map((proj: any, i: number) => (
@@ -183,6 +183,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
             <h3 className="font-semibold text-lg mb-4 text-cyan-400">Layanan Bisnis #{i + 1}</h3>
             <Input label="ID (URL Slug tanpa spasi)" value={proj.id} onChange={(v: string) => updateArrayItem(i, 'id', v)} />
             <Input label="Nama Jasa / Bisnis" value={proj.title} onChange={(v: string) => updateArrayItem(i, 'title', v)} />
+            <Input label="Link Website Project" value={proj.website || ''} onChange={(v: string) => updateArrayItem(i, 'website', v)} placeholder="https://contoh.com" />
             <div className="flex gap-4">
               <Input label="Kategori Jasa" value={proj.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
               <Input label="Harga Jasa (Hanya Angka, contoh: 50000. Kosongkan jika Gratis)" value={proj.price || ''} onChange={(v: string) => updateArrayItem(i, 'price', v.replace(/\D/g, ''))} />
@@ -205,8 +206,8 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
           </div>
         ))}
         <button
-          onClick={() => addArrayItem(defaultProject)}
-          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/50 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
+          onClick={() => addArrayItem(createDefaultProject())}
+          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/60 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
         >
           <Plus size={18} /> Tambah Layanan Baru
         </button>
@@ -236,7 +237,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
         ))}
         <button
           onClick={() => addArrayItem(defaultSkill)}
-          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/50 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
+          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/60 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
         >
           <Plus size={18} /> Add New Skill
         </button>
@@ -266,7 +267,7 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
         ))}
         <button
           onClick={() => addArrayItem(defaultExp)}
-          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/50 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
+          className="w-full py-4 rounded-xl border border-dashed border-white/20 text-white/60 hover:text-white hover:border-white/40 flex items-center justify-center gap-2 transition-all"
         >
           <Plus size={18} /> Add New Experience
         </button>

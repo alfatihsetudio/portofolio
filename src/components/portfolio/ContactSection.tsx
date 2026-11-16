@@ -58,7 +58,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/40 font-light">
+              <p className="text-base text-white/60 font-normal">
                 Selalu terbuka untuk ide-ide baru, peluang, atau sekadar mengobrol tentang teknologi dan desain.
               </p>
             </AnimatedText>
@@ -68,7 +68,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
               {socialLinks.length > 0 && (
                 <AnimatedText delay={0.3}>
                   <div className="pt-8 border-t border-white/5 w-fit">
-                    <p className="text-xs text-white/30 tracking-wider uppercase mb-6">
+                    <p className="text-xs text-white/50 tracking-wider uppercase mb-6">
                       Or find me on
                     </p>
                     <div className="flex gap-4">
@@ -80,7 +80,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/50 transition-all ${link.color}`}
+                            className={`w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/60 transition-all ${link.color}`}
                             whileHover={{ scale: 1.1, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                             initial={{ opacity: 0, y: 20 }}
@@ -112,7 +112,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                       <Mail className="text-blue-400 w-5 h-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">Email</p>
+                      <p className="text-xs text-white/50 tracking-wider uppercase mb-1">Email</p>
                       <p className="text-sm font-medium text-white/90 group-hover:text-white">{data.email}</p>
                     </div>
                     <ArrowUpRight className="text-white/20 group-hover:text-white/80 w-5 h-5 transition-colors" />
@@ -130,7 +130,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                       <Phone className="text-purple-400 w-5 h-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">No. Telp</p>
+                      <p className="text-xs text-white/50 tracking-wider uppercase mb-1">No. Telp</p>
                       <p className="text-sm font-medium text-white/90 group-hover:text-white">{data.phone}</p>
                     </div>
                     <ArrowUpRight className="text-white/20 group-hover:text-white/80 w-5 h-5 transition-colors" />
@@ -145,7 +145,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                       <MapPin className="text-pink-400 w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-xs text-white/30 tracking-wider uppercase mb-1">Lokasi</p>
+                      <p className="text-xs text-white/50 tracking-wider uppercase mb-1">Lokasi</p>
                       <p className="text-sm font-medium text-white/90">{data.location}</p>
                     </div>
                   </div>
@@ -158,7 +158,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
               {socialLinks.length > 0 && (
                 <AnimatedText delay={0.6}>
                   <div className="pt-8 border-t border-white/5">
-                    <p className="text-xs text-white/30 tracking-wider uppercase mb-6 text-center">
+                    <p className="text-xs text-white/50 tracking-wider uppercase mb-6 text-center">
                       Or find me on
                     </p>
                     <div className="flex justify-center gap-4">
@@ -170,7 +170,7 @@ export default function ContactSection({ data }: ContactSectionProps) {
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/50 transition-all ${link.color}`}
+                            className={`w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-white/60 transition-all ${link.color}`}
                             whileHover={{ scale: 1.1, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                             initial={{ opacity: 0, y: 20 }}

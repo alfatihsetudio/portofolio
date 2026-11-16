@@ -63,7 +63,7 @@ export default function AboutSection({ data }: AboutSectionProps) {
 
             {/* Description */}
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/50 font-light leading-relaxed line-clamp-4 md:line-clamp-6 mb-8 md:mb-10">
+              <p className="text-base text-white/60 font-normal leading-relaxed line-clamp-4 md:line-clamp-6 mb-8 md:mb-10">
                 {data.description}
               </p>
             </AnimatedText>

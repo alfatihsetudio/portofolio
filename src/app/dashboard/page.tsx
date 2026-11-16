@@ -47,7 +47,11 @@ export default function DashboardPage() {
         setStatus({ type: 'success', message: 'Changes saved successfully!' });
         setTimeout(() => setStatus({ type: null, message: '' }), 3000);
       } else {
-        setStatus({ type: 'error', message: 'Failed to save changes' });
+        const result = await res.json().catch(() => null);
+        const message = res.status === 401
+          ? 'Sesi admin berakhir. Silakan login kembali.'
+          : result?.error || `Gagal menyimpan data (HTTP ${res.status}).`;
+        setStatus({ type: 'error', message });
       }
     } catch {
       setStatus({ type: 'error', message: 'An error occurred' });
@@ -110,7 +114,7 @@ export default function DashboardPage() {
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors"
+              className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors"
             >
               <LogOut className="w-4 h-4" />
               Logout
@@ -129,7 +133,7 @@ export default function DashboardPage() {
               className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                 activeTab === tab
                   ? 'bg-white/10 text-white border border-white/10'
-                  : 'text-white/40 hover:text-white/80 hover:bg-white/[0.02] border border-transparent'
+                  : 'text-white/60 hover:text-white/80 hover:bg-white/[0.02] border border-transparent'
               }`}
             >
               <span className="capitalize">{tab}</span> Data
@@ -137,7 +141,7 @@ export default function DashboardPage() {
           ))}
           
           <div className="mt-8 pt-8 border-t border-white/[0.05]">
-             <a href="/" className="text-xs text-white/30 hover:text-white/70 transition-colors uppercase tracking-widest block px-4">
+             <a href="/" className="text-xs text-white/50 hover:text-white/70 transition-colors uppercase tracking-widest block px-4">
               ← Go to Website
             </a>
           </div>
@@ -155,7 +159,7 @@ export default function DashboardPage() {
             </span>
           </div>
           
-          <p className="text-sm text-white/40 mb-8 font-light">
+          <p className="text-sm text-white/60 mb-8 font-normal">
             Fill in the fields below to update your portfolio section. Changes are saved directly to the database.
           </p>
 

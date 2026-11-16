@@ -25,7 +25,7 @@ export default async function AboutPage() {
             />
           ) : (
              <div className="w-full h-full rounded-[24px] lg:rounded-[28px] border sm:border-2 border-dashed border-white/10 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-white/[0.02] to-transparent">
-               <span className="text-xs uppercase tracking-widest text-white/20 font-medium">Foto Profil Utama</span>
+               <span className="text-xs uppercase tracking-widest text-white/40 font-medium">Foto Profil Utama</span>
                <span className="text-[10px] text-white/10">(Upload foto dengan aspek rasio 1:1 di Dashboard)</span>
              </div>
           )}
@@ -35,7 +35,7 @@ export default async function AboutPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight text-left">
           Tentang <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Saya.</span>
         </h1>
-        <div className="w-full text-base text-white/70 font-light leading-relaxed mb-8 text-left">
+        <div className="w-full text-base text-white/70 font-normal leading-relaxed mb-8 text-left">
           {data.about.description.split('\n').map((paragraph, index) => (
             paragraph.trim() ? <p key={index} className="mb-6">{paragraph}</p> : null
           ))}

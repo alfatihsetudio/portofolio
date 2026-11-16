@@ -27,7 +27,7 @@ export default async function ProjectsArchive() {
             <span className="text-sm font-medium tracking-wide">Kembali ke Beranda</span>
           </Link>
           
-          <div className="text-sm font-semibold tracking-widest uppercase text-white/30 hidden sm:block">
+          <div className="text-sm font-semibold tracking-widest uppercase text-white/50 hidden sm:block">
             Project Archive
           </div>
         </div>
@@ -41,7 +41,7 @@ export default async function ProjectsArchive() {
         </AnimatedText>
         
         <AnimatedText delay={0.1}>
-          <p className="text-base text-white/40 font-light mb-16 max-w-xl">
+          <p className="text-base text-white/60 font-normal mb-16 max-w-xl">
             Kumpulan opsi layanan dan bisnis terlengkap yang bisa Anda pesan. Klik pada layanan mana saja untuk melihat detail, harga, dan fitur yang akan Anda dapatkan.
           </p>
         </AnimatedText>
@@ -88,12 +88,12 @@ export default async function ProjectsArchive() {
 
                   {/* Content */}
                   <div className="p-4 flex flex-col flex-1">
-                    <h3 className="text-sm font-semibold text-white mb-1.5 tracking-tight line-clamp-2">
+                    <h3 className="text-sm font-bold text-white mb-1.5 tracking-tight line-clamp-2">
                       {project.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-xs text-white/40 font-light leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-xs text-white/80 font-semibold leading-relaxed mb-4 line-clamp-2">
                       {project.description || "Tuliskan deskripsi singkat jasa Anda di sini..."}
                     </p>
 
@@ -112,7 +112,7 @@ export default async function ProjectsArchive() {
           ))}
           
           {projects.length === 0 && (
-            <div className="col-span-2 md:col-span-3 lg:col-span-4 py-20 text-center text-white/30 text-sm">
+            <div className="col-span-2 md:col-span-3 lg:col-span-4 py-20 text-center text-white/50 text-sm">
               No projects deployed yet.
             </div>
           )}

@@ -68,7 +68,7 @@ export default function Navigation() {
               <button
                 key={item.label}
                 onClick={() => handleNavClick(item.href)}
-                className="text-sm font-medium text-white/50 hover:text-white transition-colors tracking-wide"
+                className="text-sm font-medium text-white/60 hover:text-white transition-colors tracking-wide"
               >
                 {item.label}
               </button>
@@ -145,7 +145,7 @@ export default function Navigation() {
                         item.label === 'Contact' ? 'Kontak' : item.label
                       }
                     </span>
-                    <ChevronRight size={16} className="text-white/15 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight size={16} className="text-white/15 group-hover:text-white/60 group-hover:translate-x-0.5 transition-all" />
                   </button>
                 </motion.div>
               ))}

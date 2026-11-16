@@ -54,7 +54,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
               className="w-full h-full rounded-2xl border border-white/10 flex items-center justify-center transition-transform duration-700 group-hover:scale-105 group-hover:border-white/20"
               style={{ background: `linear-gradient(135deg, ${gradient})` }}
             >
-              <span className="text-white/20 text-xs tracking-widest uppercase font-medium">Tanpa Gambar</span>
+              <span className="text-white/40 text-xs tracking-widest uppercase font-medium">Tanpa Gambar</span>
             </div>
           </div>
         )}
@@ -67,7 +67,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
             className="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.3)] group-hover:shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-shadow"
             style={{ background: `linear-gradient(135deg, ${dotGradient})` }}
           />
-          <span className="text-[10px] font-semibold text-white/40 tracking-widest uppercase">
+          <span className="text-[10px] font-semibold text-white/60 tracking-widest uppercase">
             {skill.category}
           </span>
         </div>
@@ -77,11 +77,11 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
         </h3>
         
         {skill.description ? (
-          <p className="text-sm text-white/50 leading-relaxed font-light line-clamp-2 sm:line-clamp-3">
+          <p className="text-sm text-white/60 leading-relaxed font-normal line-clamp-2 sm:line-clamp-3">
             {skill.description}
           </p>
         ) : (
-          <p className="text-sm text-white/30 font-light italic">
+          <p className="text-sm text-white/50 font-normal italic">
             Tidak ada deskripsi untuk keahlian ini.
           </p>
         )}
@@ -123,7 +123,7 @@ export default function SkillsSection({ data }: SkillsSectionProps) {
             </AnimatedText>
 
             <AnimatedText delay={0.2}>
-              <p className="text-base text-white/40 font-light mb-8 md:mb-0">
+              <p className="text-base text-white/60 font-normal mb-8 md:mb-0">
                 Teknologi, bahasa pemrograman, dan alat yang saya gunakan untuk mewujudkan ide.
               </p>
             </AnimatedText>
@@ -156,7 +156,7 @@ export default function SkillsSection({ data }: SkillsSectionProps) {
             ) : (
               <AnimatedText delay={0.3}>
                 <div className="text-center py-20">
-                  <p className="text-white/30 text-sm">Belum ada keahlian yang ditambahkan.</p>
+                  <p className="text-white/50 text-sm">Belum ada keahlian yang ditambahkan.</p>
                 </div>
               </AnimatedText>
             )}

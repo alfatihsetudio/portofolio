@@ -36,9 +36,10 @@ export async function PUT(request: NextRequest) {
       { message: 'Portfolio data updated successfully' },
       { status: 200 }
     );
-  } catch {
+  } catch (error) {
+    console.error('Portfolio update failed:', error);
     return NextResponse.json(
-      { error: 'Failed to update portfolio data' },
+      { error: error instanceof Error ? error.message : 'Failed to update portfolio data' },
       { status: 500 }
     );
   }
