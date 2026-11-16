@@ -1,5 +1,12 @@
 import { Trash2, Plus, Upload, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { upload } from '@vercel/blob/client';
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_UPLOAD_BYTES } from '@/lib/image-upload';
+
+export type ImageTarget =
+  | { section: 'hero'; field: 'avatar' }
+  | { section: 'about'; field: 'image' }
+  | { section: 'projects' | 'skills'; field: 'image'; index: number };
 
 // ================= Helper Component =================
 const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }: any) => (
@@ -24,34 +31,66 @@ const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }:
   </div>
 );
 
-const ImageUploadField = ({ label, value, onChange }: any) => {
+const ImageUploadField = ({ label, value, onChange, onUploaded }: any) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const input = e.currentTarget;
+    const file = input.files?.[0];
     if (!file) return;
 
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
+    setUploadError('');
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    const extensionMimeTypes: Record<string, string> = {
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+      gif: 'image/gif',
+      avif: 'image/avif',
+    };
+    const contentType = file.type.toLowerCase() || extensionMimeTypes[extension || ''] || '';
+    if (!ALLOWED_IMAGE_TYPES.includes(contentType as (typeof ALLOWED_IMAGE_TYPES)[number])) {
+      setUploadError('Format gambar tidak didukung. Gunakan JPEG, PNG, WebP, GIF, atau AVIF.');
+      input.value = '';
+      return;
+    }
 
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+    const uploadFile = file.type ? file : new File([file], file.name, {
+      type: contentType,
+      lastModified: file.lastModified,
+    });
+
+    if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
+      setUploadError('Ukuran gambar maksimal 25 MB.');
+      input.value = '';
+      return;
+    }
+
+    setIsUploading(true);
+    let uploadedUrl = '';
+    try {
+      const blob = await upload(`portfolio/images/${file.name}`, uploadFile, {
+        access: 'public',
+        handleUploadUrl: '/api/upload',
+        multipart: file.size > 5 * 1024 * 1024,
       });
 
-      if (res.ok) {
-        const { url } = await res.json();
-        onChange(url);
-      } else {
-        const errData = await res.json().catch(() => ({ error: 'Unknown server error' }));
-        alert(`Gagal: ${errData.error || res.statusText}\nDetail: ${errData.details || 'Tidak ada detail'}\n\nTips: Coba buka Dashboard Vercel > Storage > Blob, lalu pastikan sudah terhubung (Connected) ke project ini.`);
+      if (!blob.url) {
+        throw new Error('Server tidak mengembalikan URL gambar.');
       }
-    } catch (err) {
-      alert("Error saat mengupload gamber.");
+      uploadedUrl = blob.url;
+      onChange(blob.url);
+      await onUploaded?.(blob.url);
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : 'Kesalahan tidak diketahui.';
+      setUploadError(uploadedUrl
+        ? `Gambar sudah diunggah, tetapi URL belum tersimpan: ${detail}`
+        : `Gagal mengunggah gambar: ${detail}`);
     } finally {
       setIsUploading(false);
+      input.value = '';
     }
   };
 
@@ -95,11 +134,17 @@ const ImageUploadField = ({ label, value, onChange }: any) => {
           </button>
         </div>
       </div>
+      {uploadError && <p role="alert" className="mt-2 text-sm font-medium text-red-300">{uploadError}</p>}
     </div>
   );
 };
 
-export default function DynamicForm({ activeTab, data, setData }: { activeTab: string, data: any, setData: any }) {
+export default function DynamicForm({ activeTab, data, setData, onImageUploaded }: {
+  activeTab: string;
+  data: any;
+  setData: any;
+  onImageUploaded: (target: ImageTarget, url: string) => Promise<void>;
+}) {
   if (!data || !data[activeTab]) return null;
 
   const sectionData = data[activeTab];
@@ -155,7 +200,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
         <Input label="Gelar / Profesi (contoh: Web Developer / Pelajar)" value={sectionData.title} onChange={(v: string) => updateField('title', v)} />
         <Input label="Subjudul / Deskripsi Singkat" isTextarea value={sectionData.subtitle} onChange={(v: string) => updateField('subtitle', v)} />
         <Input label="Slogan (contoh: Design. Build. Inspire.)" value={sectionData.tagline} onChange={(v: string) => updateField('tagline', v)} />
-        <ImageUploadField label="Foto Profil" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} />
+        <ImageUploadField
+          label="Foto Profil"
+          value={sectionData.avatar}
+          onChange={(v: string) => updateField('avatar', v)}
+          onUploaded={(url: string) => onImageUploaded({ section: 'hero', field: 'avatar' }, url)}
+        />
       </div>
     );
   }
@@ -163,7 +213,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
   if (activeTab === 'about') {
     return (
       <div className="space-y-6">
-        <ImageUploadField label="Foto Utama (Opsional, 1x1 direkomendasikan)" value={sectionData.image} onChange={(v: string) => updateField('image', v)} />
+        <ImageUploadField
+          label="Foto Utama (Opsional, 1x1 direkomendasikan)"
+          value={sectionData.image}
+          onChange={(v: string) => updateField('image', v)}
+          onUploaded={(url: string) => onImageUploaded({ section: 'about', field: 'image' }, url)}
+        />
         <Input label="Deskripsi Tentang Saya" isTextarea value={sectionData.description} onChange={(v: string) => updateField('description', v)} />
       </div>
     );
@@ -196,7 +251,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
               onChange={(v: string) => updateArrayItem(i, 'whatsappText', v)} 
               placeholder="Halo, saya tertarik dengan jasa ini..."
             />
-            <ImageUploadField label="Gambar / Foto Jasa" value={proj.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
+            <ImageUploadField
+              label="Gambar / Foto Jasa"
+              value={proj.image}
+              onChange={(v: string) => updateArrayItem(i, 'image', v)}
+              onUploaded={(url: string) => onImageUploaded({ section: 'projects', field: 'image', index: i }, url)}
+            />
             <Input 
               label="Deskripsi Lengkap Jasa (Gunakan tombol ENTER / baris baru untuk membuat paragraf baru)" 
               isTextarea 
@@ -232,7 +292,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
               <Input label="Kategori" value={skill.category} onChange={(v: string) => updateArrayItem(i, 'category', v)} />
             </div>
             <Input label="Deskripsi" value={skill.description} onChange={(v: string) => updateArrayItem(i, 'description', v)} />
-            <ImageUploadField label="Logo / Ikon Keahlian" value={skill.image} onChange={(v: string) => updateArrayItem(i, 'image', v)} />
+            <ImageUploadField
+              label="Logo / Ikon Keahlian"
+              value={skill.image}
+              onChange={(v: string) => updateArrayItem(i, 'image', v)}
+              onUploaded={(url: string) => onImageUploaded({ section: 'skills', field: 'image', index: i }, url)}
+            />
           </div>
         ))}
         <button

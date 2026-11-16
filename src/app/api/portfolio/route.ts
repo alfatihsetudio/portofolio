@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { getPortfolioData, savePortfolioData } from '@/lib/data';
+import { getPortfolioData, savePortfolioData, type PortfolioData } from '@/lib/data';
 import { cookies } from 'next/headers';
+
+function getImageFields(data: PortfolioData) {
+  return JSON.stringify({
+    avatar: data?.hero?.avatar || '',
+    about: data?.about?.image || '',
+    projects: Array.isArray(data?.projects) ? data.projects.map((item) => item?.image || '') : [],
+    skills: Array.isArray(data?.skills) ? data.skills.map((item) => item?.image || '') : [],
+  });
+}
 
 // GET - Public: Get portfolio data
 export async function GET() {
@@ -29,14 +38,12 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const data = await request.json();
+    const data = await request.json() as PortfolioData;
     await savePortfolioData(data);
 
-    if (typeof data.hero?.avatar === 'string' && data.hero.avatar.trim()) {
-      const savedData = await getPortfolioData();
-      if (savedData.hero.avatar !== data.hero.avatar) {
-        throw new Error('Foto profil belum bisa dibaca kembali setelah disimpan. Silakan coba simpan sekali lagi.');
-      }
+    const savedData = await getPortfolioData();
+    if (getImageFields(savedData) !== getImageFields(data)) {
+      throw new Error('URL gambar belum tersimpan dengan benar. Data yang tersimpan berbeda dari perubahan dashboard.');
     }
 
     return NextResponse.json(

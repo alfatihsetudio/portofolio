@@ -71,13 +71,17 @@ export interface PortfolioData {
 export async function getPortfolioData(): Promise<PortfolioData> {
   if (isVercelBlobConfigured()) {
     try {
-      let latestBlob: { url: string; uploadedAt: Date } | undefined;
+      let latestBlob: { url: string; pathname: string; uploadedAt: Date } | undefined;
       let cursor: string | undefined;
 
       do {
         const page = await list({ prefix: portfolioSnapshotPrefix, limit: 1000, cursor });
         for (const blob of page.blobs) {
-          if (!latestBlob || blob.uploadedAt > latestBlob.uploadedAt) {
+          if (
+            !latestBlob ||
+            blob.uploadedAt > latestBlob.uploadedAt ||
+            (blob.uploadedAt.getTime() === latestBlob.uploadedAt.getTime() && blob.pathname > latestBlob.pathname)
+          ) {
             latestBlob = blob;
           }
         }
@@ -116,7 +120,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 export async function savePortfolioData(data: PortfolioData): Promise<void> {
   if (isVercelBlobConfigured()) {
     try {
-      await put(`${portfolioSnapshotPrefix}${randomUUID()}.json`, JSON.stringify(data), {
+      await put(`${portfolioSnapshotPrefix}${Date.now()}-${randomUUID()}.json`, JSON.stringify(data), {
         access: 'public',
         addRandomSuffix: false,
         cacheControlMaxAge: 60,

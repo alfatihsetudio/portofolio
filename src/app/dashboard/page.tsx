@@ -1,18 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Database, LogOut, CheckCircle2, AlertCircle, Save } from 'lucide-react';
-import DynamicForm from './DynamicForm';
+import DynamicForm, { type ImageTarget } from './DynamicForm';
+import type { PortfolioData } from '@/lib/data';
 
 export default function DashboardPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<PortfolioData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [activeTab, setActiveTab] = useState('hero');
+  const dataRef = useRef<PortfolioData | null>(null);
   const router = useRouter();
+
+  dataRef.current = data;
 
   useEffect(() => {
     fetchData();
@@ -23,7 +27,7 @@ export default function DashboardPage() {
       const res = await fetch('/api/portfolio');
       if (res.ok) {
         const json = await res.json();
-        setData(json);
+        setData(json as PortfolioData);
       }
     } catch {
       setStatus({ type: 'error', message: 'Failed to load data' });
@@ -32,29 +36,68 @@ export default function DashboardPage() {
     }
   };
 
+  const saveData = async (portfolioData: PortfolioData) => {
+    const res = await fetch('/api/portfolio', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(portfolioData),
+    });
+
+    if (!res.ok) {
+      const result = await res.json().catch(() => null);
+      const message = res.status === 401
+        ? 'Sesi admin berakhir. Silakan login kembali.'
+        : result?.error || `Gagal menyimpan data (HTTP ${res.status}).`;
+      throw new Error(message);
+    }
+  };
+
   const handleSave = async () => {
+    if (!data) return;
     setIsSaving(true);
     setStatus({ type: null, message: '' });
 
     try {
-      const res = await fetch('/api/portfolio', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      await saveData(data);
+      setStatus({ type: 'success', message: 'Perubahan tersimpan dan sudah diverifikasi.' });
+      setTimeout(() => setStatus({ type: null, message: '' }), 4000);
+    } catch (error) {
+      setStatus({ type: 'error', message: error instanceof Error ? error.message : 'Gagal menyimpan perubahan.' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
-      if (res.ok) {
-        setStatus({ type: 'success', message: 'Changes saved successfully!' });
-        setTimeout(() => setStatus({ type: null, message: '' }), 3000);
-      } else {
-        const result = await res.json().catch(() => null);
-        const message = res.status === 401
-          ? 'Sesi admin berakhir. Silakan login kembali.'
-          : result?.error || `Gagal menyimpan data (HTTP ${res.status}).`;
-        setStatus({ type: 'error', message });
-      }
-    } catch {
-      setStatus({ type: 'error', message: 'An error occurred' });
+  const handleImageUploaded = async (target: ImageTarget, url: string) => {
+    const currentData = dataRef.current;
+    if (!currentData) throw new Error('Data portofolio belum siap disimpan.');
+
+    let nextData: PortfolioData;
+    if (target.section === 'projects' || target.section === 'skills') {
+      const items = [...(currentData[target.section] || [])];
+      if (!items[target.index]) throw new Error('Item gambar tidak ditemukan. Muat ulang dashboard lalu coba lagi.');
+      items[target.index] = { ...items[target.index], [target.field]: url };
+      nextData = { ...currentData, [target.section]: items } as PortfolioData;
+    } else {
+      nextData = {
+        ...currentData,
+        [target.section]: { ...currentData[target.section], [target.field]: url },
+      };
+    }
+
+    dataRef.current = nextData;
+    setData(nextData);
+    setIsSaving(true);
+    setStatus({ type: null, message: '' });
+
+    try {
+      await saveData(nextData);
+      setStatus({ type: 'success', message: 'Gambar tersimpan dan URL-nya sudah diverifikasi.' });
+      setTimeout(() => setStatus({ type: null, message: '' }), 4000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Gambar terunggah, tetapi gagal menyimpan URL-nya.';
+      setStatus({ type: 'error', message });
+      throw error;
     } finally {
       setIsSaving(false);
     }
@@ -164,7 +207,12 @@ export default function DashboardPage() {
           </p>
 
           <div className="relative">
-            <DynamicForm activeTab={activeTab} data={data} setData={setData} />
+            <DynamicForm
+              activeTab={activeTab}
+              data={data}
+              setData={setData}
+              onImageUploaded={handleImageUploaded}
+            />
           </div>
         </div>
       </main>
