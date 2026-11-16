@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Database, LogOut, CheckCircle2, AlertCircle, Save } from 'lucide-react';
@@ -12,7 +12,10 @@ export default function DashboardPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [activeTab, setActiveTab] = useState('hero');
+  const dataRef = useRef<any>(null);
   const router = useRouter();
+
+  dataRef.current = data;
 
   useEffect(() => {
     fetchData();
@@ -55,6 +58,43 @@ export default function DashboardPage() {
       }
     } catch {
       setStatus({ type: 'error', message: 'An error occurred' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleProfileImageUploaded = async (url: string) => {
+    const currentData = dataRef.current;
+    if (!currentData?.hero) return;
+
+    const nextData = {
+      ...currentData,
+      hero: { ...currentData.hero, avatar: url },
+    };
+    dataRef.current = nextData;
+    setData(nextData);
+    setIsSaving(true);
+    setStatus({ type: null, message: '' });
+
+    try {
+      const res = await fetch('/api/portfolio', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nextData),
+      });
+
+      if (!res.ok) {
+        const result = await res.json().catch(() => null);
+        throw new Error(result?.error || `Gagal menyimpan foto (HTTP ${res.status}).`);
+      }
+
+      setStatus({ type: 'success', message: 'Foto profil berhasil disimpan dan diverifikasi.' });
+      setTimeout(() => setStatus({ type: null, message: '' }), 4000);
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Gagal menyimpan foto profil.',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -164,7 +204,12 @@ export default function DashboardPage() {
           </p>
 
           <div className="relative">
-            <DynamicForm activeTab={activeTab} data={data} setData={setData} />
+            <DynamicForm
+              activeTab={activeTab}
+              data={data}
+              setData={setData}
+              onProfileImageUploaded={handleProfileImageUploaded}
+            />
           </div>
         </div>
       </main>

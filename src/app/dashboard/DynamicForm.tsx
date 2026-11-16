@@ -24,7 +24,7 @@ const Input = ({ label, value, onChange, isTextarea = false, placeholder = '' }:
   </div>
 );
 
-const ImageUploadField = ({ label, value, onChange }: any) => {
+const ImageUploadField = ({ label, value, onChange, onUploaded }: any) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +44,7 @@ const ImageUploadField = ({ label, value, onChange }: any) => {
       if (res.ok) {
         const { url } = await res.json();
         onChange(url);
+        await onUploaded?.(url);
       } else {
         const errData = await res.json().catch(() => ({ error: 'Unknown server error' }));
         alert(`Gagal: ${errData.error || res.statusText}\nDetail: ${errData.details || 'Tidak ada detail'}\n\nTips: Coba buka Dashboard Vercel > Storage > Blob, lalu pastikan sudah terhubung (Connected) ke project ini.`);
@@ -99,7 +100,12 @@ const ImageUploadField = ({ label, value, onChange }: any) => {
   );
 };
 
-export default function DynamicForm({ activeTab, data, setData }: { activeTab: string, data: any, setData: any }) {
+export default function DynamicForm({ activeTab, data, setData, onProfileImageUploaded }: {
+  activeTab: string;
+  data: any;
+  setData: any;
+  onProfileImageUploaded?: (url: string) => Promise<void>;
+}) {
   if (!data || !data[activeTab]) return null;
 
   const sectionData = data[activeTab];
@@ -155,7 +161,12 @@ export default function DynamicForm({ activeTab, data, setData }: { activeTab: s
         <Input label="Gelar / Profesi (contoh: Web Developer / Pelajar)" value={sectionData.title} onChange={(v: string) => updateField('title', v)} />
         <Input label="Subjudul / Deskripsi Singkat" isTextarea value={sectionData.subtitle} onChange={(v: string) => updateField('subtitle', v)} />
         <Input label="Slogan (contoh: Design. Build. Inspire.)" value={sectionData.tagline} onChange={(v: string) => updateField('tagline', v)} />
-        <ImageUploadField label="Foto Profil" value={sectionData.avatar} onChange={(v: string) => updateField('avatar', v)} />
+        <ImageUploadField
+          label="Foto Profil"
+          value={sectionData.avatar}
+          onChange={(v: string) => updateField('avatar', v)}
+          onUploaded={onProfileImageUploaded}
+        />
       </div>
     );
   }
