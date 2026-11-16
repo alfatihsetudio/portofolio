@@ -1,6 +1,5 @@
 import { Trash2, Plus, Upload, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { upload } from '@vercel/blob/client';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_UPLOAD_BYTES } from '@/lib/image-upload';
 
 export type ImageTarget =
@@ -71,6 +70,9 @@ const ImageUploadField = ({ label, value, onChange, onUploaded }: any) => {
     setIsUploading(true);
     let uploadedUrl = '';
     try {
+      // Load the browser-only Blob SDK when the user starts an upload, not while
+      // the dashboard is rendering. This keeps its browser shims out of startup.
+      const { upload } = await import('@vercel/blob/client');
       const blob = await upload(`portfolio/images/${file.name}`, uploadFile, {
         access: 'public',
         handleUploadUrl: '/api/upload',
